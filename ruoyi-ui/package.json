@@ -1,8 +1,8 @@
 {
-  "name": "ruoyi",
+  "name": "takeout",
   "version": "3.8.7",
-  "description": "若依管理系统",
-  "author": "若依",
+  "description": "外卖系统",
+  "author": "李春凯",
   "license": "MIT",
   "scripts": {
     "dev": "vue-cli-service serve",
