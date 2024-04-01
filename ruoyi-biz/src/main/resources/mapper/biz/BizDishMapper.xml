@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.biz.mapper.BizDishMapper">
+    
+    <resultMap type="BizDish" id="BizDishResult">
+        <result property="dishId"    column="dish_id"    />
+        <result property="categoryId"    column="category_id"    />
+        <result property="dishName"    column="dish_name"    />
+        <result property="dishPrice"    column="dish_price"    />
+        <result property="dishImage"    column="dish_image"    />
+        <result property="description"    column="description"    />
+        <result property="saleStatus"    column="sale_status"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="updateBy"    column="update_by"    />
+    </resultMap>
+
+    <sql id="selectBizDishVo">
+        select dish_id, category_id, dish_name, dish_price, dish_image, description, sale_status, create_time, create_by, update_time, update_by from biz_dish
+    </sql>
+
+    <select id="selectBizDishList" parameterType="BizDish" resultMap="BizDishResult">
+        <include refid="selectBizDishVo"/>
+        <where>  
+            <if test="categoryId != null "> and category_id = #{categoryId}</if>
+            <if test="dishName != null  and dishName != ''"> and dish_name like concat('%', #{dishName}, '%')</if>
+            <if test="dishPrice != null "> and dish_price = #{dishPrice}</if>
+            <if test="dishImage != null  and dishImage != ''"> and dish_image = #{dishImage}</if>
+            <if test="description != null  and description != ''"> and description = #{description}</if>
+            <if test="saleStatus != null  and saleStatus != ''"> and sale_status = #{saleStatus}</if>
+        </where>
+    </select>
+    
+    <select id="selectBizDishByDishId" parameterType="Long" resultMap="BizDishResult">
+        <include refid="selectBizDishVo"/>
+        where dish_id = #{dishId}
+    </select>
+        
+    <insert id="insertBizDish" parameterType="BizDish" useGeneratedKeys="true" keyProperty="dishId">
+        insert into biz_dish
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="categoryId != null">category_id,</if>
+            <if test="dishName != null and dishName != ''">dish_name,</if>
+            <if test="dishPrice != null">dish_price,</if>
+            <if test="dishImage != null and dishImage != ''">dish_image,</if>
+            <if test="description != null">description,</if>
+            <if test="saleStatus != null and saleStatus != ''">sale_status,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="createBy != null and createBy != ''">create_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="updateBy != null">update_by,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="categoryId != null">#{categoryId},</if>
+            <if test="dishName != null and dishName != ''">#{dishName},</if>
+            <if test="dishPrice != null">#{dishPrice},</if>
+            <if test="dishImage != null and dishImage != ''">#{dishImage},</if>
+            <if test="description != null">#{description},</if>
+            <if test="saleStatus != null and saleStatus != ''">#{saleStatus},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="createBy != null and createBy != ''">#{createBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBizDish" parameterType="BizDish">
+        update biz_dish
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="categoryId != null">category_id = #{categoryId},</if>
+            <if test="dishName != null and dishName != ''">dish_name = #{dishName},</if>
+            <if test="dishPrice != null">dish_price = #{dishPrice},</if>
+            <if test="dishImage != null and dishImage != ''">dish_image = #{dishImage},</if>
+            <if test="description != null">description = #{description},</if>
+            <if test="saleStatus != null and saleStatus != ''">sale_status = #{saleStatus},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="createBy != null and createBy != ''">create_by = #{createBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+        </trim>
+        where dish_id = #{dishId}
+    </update>
+
+    <delete id="deleteBizDishByDishId" parameterType="Long">
+        delete from biz_dish where dish_id = #{dishId}
+    </delete>
+
+    <delete id="deleteBizDishByDishIds" parameterType="String">
+        delete from biz_dish where dish_id in 
+        <foreach item="dishId" collection="array" open="(" separator="," close=")">
+            #{dishId}
+        </foreach>
+    </delete>
+</mapper>

@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.biz.mapper.BizOrderMapper">
+    
+    <resultMap type="BizOrder" id="BizOrderResult">
+        <result property="orderId"    column="order_id"    />
+        <result property="storeId"    column="store_id"    />
+        <result property="userId"    column="user_id"    />
+        <result property="orderTime"    column="order_time"    />
+        <result property="desiredDeliveryTime"    column="desired_delivery_time"    />
+        <result property="estimatedDeliveryTime"    column="estimated_delivery_time"    />
+        <result property="packAmount"    column="pack_amount"    />
+        <result property="deliveryAmount"    column="delivery_amount"    />
+        <result property="totalAmount"    column="total_amount"    />
+        <result property="remark"    column="remark"    />
+        <result property="tablewareNumber"    column="tableware_number"    />
+        <result property="orderNumber"    column="order_number"    />
+        <result property="orderStatus"    column="order_status"    />
+        <result property="totalProduct"    column="total_product"    />
+        <result property="payTime"    column="pay_time"    />
+        <result property="payMethod"    column="pay_method"    />
+        <result property="rejectReason"    column="reject_reason"    />
+        <result property="acceptTime"    column="accept_time"    />
+        <result property="deliveryTime"    column="delivery_time"    />
+        <result property="finishTime"    column="finish_time"    />
+        <result property="cancelReason"    column="cancel_reason"    />
+        <result property="userName"    column="user_name"    />
+        <result property="consignee"    column="consignee"    />
+        <result property="phone"    column="phone"    />
+        <result property="sex"    column="sex"    />
+        <result property="provinceCode"    column="province_code"    />
+        <result property="provinceName"    column="province_name"    />
+        <result property="cityCode"    column="city_code"    />
+        <result property="cityName"    column="city_name"    />
+        <result property="districtCode"    column="district_code"    />
+        <result property="districtName"    column="district_name"    />
+        <result property="detailAddress"    column="detail_address"    />
+        <result property="label"    column="label"    />
+    </resultMap>
+
+    <sql id="selectBizOrderVo">
+        select order_id, store_id, user_id, order_time, desired_delivery_time, estimated_delivery_time, pack_amount, delivery_amount, total_amount, remark, tableware_number, order_number, order_status, total_product, pay_time, pay_method, reject_reason, accept_time, delivery_time, finish_time, cancel_reason, user_name, consignee, phone, sex, province_code, province_name, city_code, city_name, district_code, district_name, detail_address, label from biz_order
+    </sql>
+
+    <select id="selectBizOrderList" parameterType="BizOrder" resultMap="BizOrderResult">
+        <include refid="selectBizOrderVo"/>
+        <where>  
+            <if test="storeId != null "> and store_id = #{storeId}</if>
+            <if test="userId != null "> and user_id = #{userId}</if>
+            <if test="orderTime != null "> and order_time = #{orderTime}</if>
+            <if test="desiredDeliveryTime != null  and desiredDeliveryTime != ''"> and desired_delivery_time = #{desiredDeliveryTime}</if>
+            <if test="estimatedDeliveryTime != null  and estimatedDeliveryTime != ''"> and estimated_delivery_time = #{estimatedDeliveryTime}</if>
+            <if test="packAmount != null "> and pack_amount = #{packAmount}</if>
+            <if test="deliveryAmount != null "> and delivery_amount = #{deliveryAmount}</if>
+            <if test="totalAmount != null "> and total_amount = #{totalAmount}</if>
+            <if test="tablewareNumber != null "> and tableware_number = #{tablewareNumber}</if>
+            <if test="orderNumber != null  and orderNumber != ''"> and order_number = #{orderNumber}</if>
+            <if test="orderStatus != null  and orderStatus != ''"> and order_status = #{orderStatus}</if>
+            <if test="totalProduct != null "> and total_product = #{totalProduct}</if>
+            <if test="payTime != null "> and pay_time = #{payTime}</if>
+            <if test="payMethod != null  and payMethod != ''"> and pay_method = #{payMethod}</if>
+            <if test="rejectReason != null  and rejectReason != ''"> and reject_reason = #{rejectReason}</if>
+            <if test="acceptTime != null "> and accept_time = #{acceptTime}</if>
+            <if test="deliveryTime != null "> and delivery_time = #{deliveryTime}</if>
+            <if test="finishTime != null "> and finish_time = #{finishTime}</if>
+            <if test="cancelReason != null  and cancelReason != ''"> and cancel_reason = #{cancelReason}</if>
+            <if test="userName != null  and userName != ''"> and user_name like concat('%', #{userName}, '%')</if>
+            <if test="consignee != null  and consignee != ''"> and consignee = #{consignee}</if>
+            <if test="phone != null  and phone != ''"> and phone = #{phone}</if>
+            <if test="sex != null  and sex != ''"> and sex = #{sex}</if>
+            <if test="provinceCode != null  and provinceCode != ''"> and province_code = #{provinceCode}</if>
+            <if test="provinceName != null  and provinceName != ''"> and province_name like concat('%', #{provinceName}, '%')</if>
+            <if test="cityCode != null  and cityCode != ''"> and city_code = #{cityCode}</if>
+            <if test="cityName != null  and cityName != ''"> and city_name like concat('%', #{cityName}, '%')</if>
+            <if test="districtCode != null  and districtCode != ''"> and district_code = #{districtCode}</if>
+            <if test="districtName != null  and districtName != ''"> and district_name like concat('%', #{districtName}, '%')</if>
+            <if test="detailAddress != null  and detailAddress != ''"> and detail_address = #{detailAddress}</if>
+            <if test="label != null  and label != ''"> and label = #{label}</if>
+        </where>
+    </select>
+    
+    <select id="selectBizOrderByOrderId" parameterType="Long" resultMap="BizOrderResult">
+        <include refid="selectBizOrderVo"/>
+        where order_id = #{orderId}
+    </select>
+        
+    <insert id="insertBizOrder" parameterType="BizOrder" useGeneratedKeys="true" keyProperty="orderId">
+        insert into biz_order
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="storeId != null">store_id,</if>
+            <if test="userId != null">user_id,</if>
+            <if test="orderTime != null">order_time,</if>
+            <if test="desiredDeliveryTime != null and desiredDeliveryTime != ''">desired_delivery_time,</if>
+            <if test="estimatedDeliveryTime != null and estimatedDeliveryTime != ''">estimated_delivery_time,</if>
+            <if test="packAmount != null">pack_amount,</if>
+            <if test="deliveryAmount != null">delivery_amount,</if>
+            <if test="totalAmount != null">total_amount,</if>
+            <if test="remark != null">remark,</if>
+            <if test="tablewareNumber != null">tableware_number,</if>
+            <if test="orderNumber != null and orderNumber != ''">order_number,</if>
+            <if test="orderStatus != null and orderStatus != ''">order_status,</if>
+            <if test="totalProduct != null">total_product,</if>
+            <if test="payTime != null">pay_time,</if>
+            <if test="payMethod != null">pay_method,</if>
+            <if test="rejectReason != null">reject_reason,</if>
+            <if test="acceptTime != null">accept_time,</if>
+            <if test="deliveryTime != null">delivery_time,</if>
+            <if test="finishTime != null">finish_time,</if>
+            <if test="cancelReason != null">cancel_reason,</if>
+            <if test="userName != null and userName != ''">user_name,</if>
+            <if test="consignee != null and consignee != ''">consignee,</if>
+            <if test="phone != null and phone != ''">phone,</if>
+            <if test="sex != null and sex != ''">sex,</if>
+            <if test="provinceCode != null and provinceCode != ''">province_code,</if>
+            <if test="provinceName != null and provinceName != ''">province_name,</if>
+            <if test="cityCode != null and cityCode != ''">city_code,</if>
+            <if test="cityName != null and cityName != ''">city_name,</if>
+            <if test="districtCode != null and districtCode != ''">district_code,</if>
+            <if test="districtName != null and districtName != ''">district_name,</if>
+            <if test="detailAddress != null and detailAddress != ''">detail_address,</if>
+            <if test="label != null">label,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="storeId != null">#{storeId},</if>
+            <if test="userId != null">#{userId},</if>
+            <if test="orderTime != null">#{orderTime},</if>
+            <if test="desiredDeliveryTime != null and desiredDeliveryTime != ''">#{desiredDeliveryTime},</if>
+            <if test="estimatedDeliveryTime != null and estimatedDeliveryTime != ''">#{estimatedDeliveryTime},</if>
+            <if test="packAmount != null">#{packAmount},</if>
+            <if test="deliveryAmount != null">#{deliveryAmount},</if>
+            <if test="totalAmount != null">#{totalAmount},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="tablewareNumber != null">#{tablewareNumber},</if>
+            <if test="orderNumber != null and orderNumber != ''">#{orderNumber},</if>
+            <if test="orderStatus != null and orderStatus != ''">#{orderStatus},</if>
+            <if test="totalProduct != null">#{totalProduct},</if>
+            <if test="payTime != null">#{payTime},</if>
+            <if test="payMethod != null">#{payMethod},</if>
+            <if test="rejectReason != null">#{rejectReason},</if>
+            <if test="acceptTime != null">#{acceptTime},</if>
+            <if test="deliveryTime != null">#{deliveryTime},</if>
+            <if test="finishTime != null">#{finishTime},</if>
+            <if test="cancelReason != null">#{cancelReason},</if>
+            <if test="userName != null and userName != ''">#{userName},</if>
+            <if test="consignee != null and consignee != ''">#{consignee},</if>
+            <if test="phone != null and phone != ''">#{phone},</if>
+            <if test="sex != null and sex != ''">#{sex},</if>
+            <if test="provinceCode != null and provinceCode != ''">#{provinceCode},</if>
+            <if test="provinceName != null and provinceName != ''">#{provinceName},</if>
+            <if test="cityCode != null and cityCode != ''">#{cityCode},</if>
+            <if test="cityName != null and cityName != ''">#{cityName},</if>
+            <if test="districtCode != null and districtCode != ''">#{districtCode},</if>
+            <if test="districtName != null and districtName != ''">#{districtName},</if>
+            <if test="detailAddress != null and detailAddress != ''">#{detailAddress},</if>
+            <if test="label != null">#{label},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBizOrder" parameterType="BizOrder">
+        update biz_order
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="storeId != null">store_id = #{storeId},</if>
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="orderTime != null">order_time = #{orderTime},</if>
+            <if test="desiredDeliveryTime != null and desiredDeliveryTime != ''">desired_delivery_time = #{desiredDeliveryTime},</if>
+            <if test="estimatedDeliveryTime != null and estimatedDeliveryTime != ''">estimated_delivery_time = #{estimatedDeliveryTime},</if>
+            <if test="packAmount != null">pack_amount = #{packAmount},</if>
+            <if test="deliveryAmount != null">delivery_amount = #{deliveryAmount},</if>
+            <if test="totalAmount != null">total_amount = #{totalAmount},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="tablewareNumber != null">tableware_number = #{tablewareNumber},</if>
+            <if test="orderNumber != null and orderNumber != ''">order_number = #{orderNumber},</if>
+            <if test="orderStatus != null and orderStatus != ''">order_status = #{orderStatus},</if>
+            <if test="totalProduct != null">total_product = #{totalProduct},</if>
+            <if test="payTime != null">pay_time = #{payTime},</if>
+            <if test="payMethod != null">pay_method = #{payMethod},</if>
+            <if test="rejectReason != null">reject_reason = #{rejectReason},</if>
+            <if test="acceptTime != null">accept_time = #{acceptTime},</if>
+            <if test="deliveryTime != null">delivery_time = #{deliveryTime},</if>
+            <if test="finishTime != null">finish_time = #{finishTime},</if>
+            <if test="cancelReason != null">cancel_reason = #{cancelReason},</if>
+            <if test="userName != null and userName != ''">user_name = #{userName},</if>
+            <if test="consignee != null and consignee != ''">consignee = #{consignee},</if>
+            <if test="phone != null and phone != ''">phone = #{phone},</if>
+            <if test="sex != null and sex != ''">sex = #{sex},</if>
+            <if test="provinceCode != null and provinceCode != ''">province_code = #{provinceCode},</if>
+            <if test="provinceName != null and provinceName != ''">province_name = #{provinceName},</if>
+            <if test="cityCode != null and cityCode != ''">city_code = #{cityCode},</if>
+            <if test="cityName != null and cityName != ''">city_name = #{cityName},</if>
+            <if test="districtCode != null and districtCode != ''">district_code = #{districtCode},</if>
+            <if test="districtName != null and districtName != ''">district_name = #{districtName},</if>
+            <if test="detailAddress != null and detailAddress != ''">detail_address = #{detailAddress},</if>
+            <if test="label != null">label = #{label},</if>
+        </trim>
+        where order_id = #{orderId}
+    </update>
+
+    <delete id="deleteBizOrderByOrderId" parameterType="Long">
+        delete from biz_order where order_id = #{orderId}
+    </delete>
+
+    <delete id="deleteBizOrderByOrderIds" parameterType="String">
+        delete from biz_order where order_id in 
+        <foreach item="orderId" collection="array" open="(" separator="," close=")">
+            #{orderId}
+        </foreach>
+    </delete>
+</mapper>

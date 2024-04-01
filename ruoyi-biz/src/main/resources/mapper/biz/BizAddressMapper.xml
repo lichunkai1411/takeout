@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.biz.mapper.BizAddressMapper">
+    
+    <resultMap type="BizAddress" id="BizAddressResult">
+        <result property="addressId"    column="address_id"    />
+        <result property="userId"    column="user_id"    />
+        <result property="consignee"    column="consignee"    />
+        <result property="sex"    column="sex"    />
+        <result property="phone"    column="phone"    />
+        <result property="provinceCode"    column="province_code"    />
+        <result property="provinceName"    column="province_name"    />
+        <result property="cityCode"    column="city_code"    />
+        <result property="cityName"    column="city_name"    />
+        <result property="districtCode"    column="district_code"    />
+        <result property="districtName"    column="district_name"    />
+        <result property="detail"    column="detail"    />
+        <result property="label"    column="label"    />
+        <result property="defaulted"    column="defaulted"    />
+    </resultMap>
+
+    <sql id="selectBizAddressVo">
+        select address_id, user_id, consignee, sex, phone, province_code, province_name, city_code, city_name, district_code, district_name, detail, label, defaulted from biz_address
+    </sql>
+
+    <select id="selectBizAddressList" parameterType="BizAddress" resultMap="BizAddressResult">
+        <include refid="selectBizAddressVo"/>
+        <where>  
+            <if test="userId != null "> and user_id = #{userId}</if>
+            <if test="consignee != null  and consignee != ''"> and consignee = #{consignee}</if>
+            <if test="sex != null  and sex != ''"> and sex = #{sex}</if>
+            <if test="phone != null  and phone != ''"> and phone = #{phone}</if>
+            <if test="provinceCode != null  and provinceCode != ''"> and province_code = #{provinceCode}</if>
+            <if test="provinceName != null  and provinceName != ''"> and province_name like concat('%', #{provinceName}, '%')</if>
+            <if test="cityCode != null  and cityCode != ''"> and city_code = #{cityCode}</if>
+            <if test="cityName != null  and cityName != ''"> and city_name like concat('%', #{cityName}, '%')</if>
+            <if test="districtCode != null  and districtCode != ''"> and district_code = #{districtCode}</if>
+            <if test="districtName != null  and districtName != ''"> and district_name like concat('%', #{districtName}, '%')</if>
+            <if test="detail != null  and detail != ''"> and detail = #{detail}</if>
+            <if test="label != null  and label != ''"> and label = #{label}</if>
+            <if test="defaulted != null "> and defaulted = #{defaulted}</if>
+        </where>
+    </select>
+    
+    <select id="selectBizAddressByAddressId" parameterType="Long" resultMap="BizAddressResult">
+        <include refid="selectBizAddressVo"/>
+        where address_id = #{addressId}
+    </select>
+        
+    <insert id="insertBizAddress" parameterType="BizAddress" useGeneratedKeys="true" keyProperty="addressId">
+        insert into biz_address
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userId != null">user_id,</if>
+            <if test="consignee != null and consignee != ''">consignee,</if>
+            <if test="sex != null and sex != ''">sex,</if>
+            <if test="phone != null and phone != ''">phone,</if>
+            <if test="provinceCode != null and provinceCode != ''">province_code,</if>
+            <if test="provinceName != null and provinceName != ''">province_name,</if>
+            <if test="cityCode != null and cityCode != ''">city_code,</if>
+            <if test="cityName != null and cityName != ''">city_name,</if>
+            <if test="districtCode != null and districtCode != ''">district_code,</if>
+            <if test="districtName != null and districtName != ''">district_name,</if>
+            <if test="detail != null and detail != ''">detail,</if>
+            <if test="label != null">label,</if>
+            <if test="defaulted != null">defaulted,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="userId != null">#{userId},</if>
+            <if test="consignee != null and consignee != ''">#{consignee},</if>
+            <if test="sex != null and sex != ''">#{sex},</if>
+            <if test="phone != null and phone != ''">#{phone},</if>
+            <if test="provinceCode != null and provinceCode != ''">#{provinceCode},</if>
+            <if test="provinceName != null and provinceName != ''">#{provinceName},</if>
+            <if test="cityCode != null and cityCode != ''">#{cityCode},</if>
+            <if test="cityName != null and cityName != ''">#{cityName},</if>
+            <if test="districtCode != null and districtCode != ''">#{districtCode},</if>
+            <if test="districtName != null and districtName != ''">#{districtName},</if>
+            <if test="detail != null and detail != ''">#{detail},</if>
+            <if test="label != null">#{label},</if>
+            <if test="defaulted != null">#{defaulted},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBizAddress" parameterType="BizAddress">
+        update biz_address
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="consignee != null and consignee != ''">consignee = #{consignee},</if>
+            <if test="sex != null and sex != ''">sex = #{sex},</if>
+            <if test="phone != null and phone != ''">phone = #{phone},</if>
+            <if test="provinceCode != null and provinceCode != ''">province_code = #{provinceCode},</if>
+            <if test="provinceName != null and provinceName != ''">province_name = #{provinceName},</if>
+            <if test="cityCode != null and cityCode != ''">city_code = #{cityCode},</if>
+            <if test="cityName != null and cityName != ''">city_name = #{cityName},</if>
+            <if test="districtCode != null and districtCode != ''">district_code = #{districtCode},</if>
+            <if test="districtName != null and districtName != ''">district_name = #{districtName},</if>
+            <if test="detail != null and detail != ''">detail = #{detail},</if>
+            <if test="label != null">label = #{label},</if>
+            <if test="defaulted != null">defaulted = #{defaulted},</if>
+        </trim>
+        where address_id = #{addressId}
+    </update>
+
+    <delete id="deleteBizAddressByAddressId" parameterType="Long">
+        delete from biz_address where address_id = #{addressId}
+    </delete>
+
+    <delete id="deleteBizAddressByAddressIds" parameterType="String">
+        delete from biz_address where address_id in 
+        <foreach item="addressId" collection="array" open="(" separator="," close=")">
+            #{addressId}
+        </foreach>
+    </delete>
+</mapper>

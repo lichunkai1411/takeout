@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.biz.mapper.BizSetmealMapper">
+    
+    <resultMap type="BizSetmeal" id="BizSetmealResult">
+        <result property="setmealId"    column="setmeal_id"    />
+        <result property="categoryId"    column="category_id"    />
+        <result property="setmealName"    column="setmeal_name"    />
+        <result property="setmealPrice"    column="setmeal_price"    />
+        <result property="setmealImage"    column="setmeal_image"    />
+        <result property="saleStatus"    column="sale_status"    />
+        <result property="description"    column="description"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="updateBy"    column="update_by"    />
+    </resultMap>
+
+    <sql id="selectBizSetmealVo">
+        select setmeal_id, category_id, setmeal_name, setmeal_price, setmeal_image, sale_status, description, create_time, create_by, update_time, update_by from biz_setmeal
+    </sql>
+
+    <select id="selectBizSetmealList" parameterType="BizSetmeal" resultMap="BizSetmealResult">
+        <include refid="selectBizSetmealVo"/>
+        <where>  
+            <if test="categoryId != null "> and category_id = #{categoryId}</if>
+            <if test="setmealName != null  and setmealName != ''"> and setmeal_name like concat('%', #{setmealName}, '%')</if>
+            <if test="setmealPrice != null "> and setmeal_price = #{setmealPrice}</if>
+            <if test="setmealImage != null  and setmealImage != ''"> and setmeal_image = #{setmealImage}</if>
+            <if test="saleStatus != null  and saleStatus != ''"> and sale_status = #{saleStatus}</if>
+            <if test="description != null  and description != ''"> and description = #{description}</if>
+        </where>
+    </select>
+    
+    <select id="selectBizSetmealBySetmealId" parameterType="Long" resultMap="BizSetmealResult">
+        <include refid="selectBizSetmealVo"/>
+        where setmeal_id = #{setmealId}
+    </select>
+        
+    <insert id="insertBizSetmeal" parameterType="BizSetmeal" useGeneratedKeys="true" keyProperty="setmealId">
+        insert into biz_setmeal
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="categoryId != null">category_id,</if>
+            <if test="setmealName != null and setmealName != ''">setmeal_name,</if>
+            <if test="setmealPrice != null">setmeal_price,</if>
+            <if test="setmealImage != null and setmealImage != ''">setmeal_image,</if>
+            <if test="saleStatus != null and saleStatus != ''">sale_status,</if>
+            <if test="description != null">description,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="createBy != null and createBy != ''">create_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="updateBy != null">update_by,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="categoryId != null">#{categoryId},</if>
+            <if test="setmealName != null and setmealName != ''">#{setmealName},</if>
+            <if test="setmealPrice != null">#{setmealPrice},</if>
+            <if test="setmealImage != null and setmealImage != ''">#{setmealImage},</if>
+            <if test="saleStatus != null and saleStatus != ''">#{saleStatus},</if>
+            <if test="description != null">#{description},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="createBy != null and createBy != ''">#{createBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBizSetmeal" parameterType="BizSetmeal">
+        update biz_setmeal
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="categoryId != null">category_id = #{categoryId},</if>
+            <if test="setmealName != null and setmealName != ''">setmeal_name = #{setmealName},</if>
+            <if test="setmealPrice != null">setmeal_price = #{setmealPrice},</if>
+            <if test="setmealImage != null and setmealImage != ''">setmeal_image = #{setmealImage},</if>
+            <if test="saleStatus != null and saleStatus != ''">sale_status = #{saleStatus},</if>
+            <if test="description != null">description = #{description},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="createBy != null and createBy != ''">create_by = #{createBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+        </trim>
+        where setmeal_id = #{setmealId}
+    </update>
+
+    <delete id="deleteBizSetmealBySetmealId" parameterType="Long">
+        delete from biz_setmeal where setmeal_id = #{setmealId}
+    </delete>
+
+    <delete id="deleteBizSetmealBySetmealIds" parameterType="String">
+        delete from biz_setmeal where setmeal_id in 
+        <foreach item="setmealId" collection="array" open="(" separator="," close=")">
+            #{setmealId}
+        </foreach>
+    </delete>
+</mapper>

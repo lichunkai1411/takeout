@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.biz.mapper.BizOrderDetailMapper">
+    
+    <resultMap type="BizOrderDetail" id="BizOrderDetailResult">
+        <result property="orderDetailId"    column="order_detail_id"    />
+        <result property="orderId"    column="order_id"    />
+        <result property="productId"    column="product_id"    />
+        <result property="productType"    column="product_type"    />
+        <result property="productImage"    column="product_image"    />
+        <result property="productName"    column="product_name"    />
+        <result property="productPrice"    column="product_price"    />
+        <result property="productNumber"    column="product_number"    />
+    </resultMap>
+
+    <sql id="selectBizOrderDetailVo">
+        select order_detail_id, order_id, product_id, product_type, product_image, product_name, product_price, product_number from biz_order_detail
+    </sql>
+
+    <select id="selectBizOrderDetailList" parameterType="BizOrderDetail" resultMap="BizOrderDetailResult">
+        <include refid="selectBizOrderDetailVo"/>
+        <where>  
+            <if test="orderId != null "> and order_id = #{orderId}</if>
+            <if test="productId != null "> and product_id = #{productId}</if>
+            <if test="productType != null  and productType != ''"> and product_type = #{productType}</if>
+            <if test="productImage != null  and productImage != ''"> and product_image = #{productImage}</if>
+            <if test="productName != null  and productName != ''"> and product_name like concat('%', #{productName}, '%')</if>
+            <if test="productPrice != null "> and product_price = #{productPrice}</if>
+            <if test="productNumber != null "> and product_number = #{productNumber}</if>
+        </where>
+    </select>
+    
+    <select id="selectBizOrderDetailByOrderDetailId" parameterType="Long" resultMap="BizOrderDetailResult">
+        <include refid="selectBizOrderDetailVo"/>
+        where order_detail_id = #{orderDetailId}
+    </select>
+        
+    <insert id="insertBizOrderDetail" parameterType="BizOrderDetail" useGeneratedKeys="true" keyProperty="orderDetailId">
+        insert into biz_order_detail
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="orderId != null">order_id,</if>
+            <if test="productId != null">product_id,</if>
+            <if test="productType != null and productType != ''">product_type,</if>
+            <if test="productImage != null and productImage != ''">product_image,</if>
+            <if test="productName != null">product_name,</if>
+            <if test="productPrice != null">product_price,</if>
+            <if test="productNumber != null">product_number,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="orderId != null">#{orderId},</if>
+            <if test="productId != null">#{productId},</if>
+            <if test="productType != null and productType != ''">#{productType},</if>
+            <if test="productImage != null and productImage != ''">#{productImage},</if>
+            <if test="productName != null">#{productName},</if>
+            <if test="productPrice != null">#{productPrice},</if>
+            <if test="productNumber != null">#{productNumber},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBizOrderDetail" parameterType="BizOrderDetail">
+        update biz_order_detail
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="orderId != null">order_id = #{orderId},</if>
+            <if test="productId != null">product_id = #{productId},</if>
+            <if test="productType != null and productType != ''">product_type = #{productType},</if>
+            <if test="productImage != null and productImage != ''">product_image = #{productImage},</if>
+            <if test="productName != null">product_name = #{productName},</if>
+            <if test="productPrice != null">product_price = #{productPrice},</if>
+            <if test="productNumber != null">product_number = #{productNumber},</if>
+        </trim>
+        where order_detail_id = #{orderDetailId}
+    </update>
+
+    <delete id="deleteBizOrderDetailByOrderDetailId" parameterType="Long">
+        delete from biz_order_detail where order_detail_id = #{orderDetailId}
+    </delete>
+
+    <delete id="deleteBizOrderDetailByOrderDetailIds" parameterType="String">
+        delete from biz_order_detail where order_detail_id in 
+        <foreach item="orderDetailId" collection="array" open="(" separator="," close=")">
+            #{orderDetailId}
+        </foreach>
+    </delete>
+</mapper>

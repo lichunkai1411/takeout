@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.biz.mapper.BizStoreMapper">
+    
+    <resultMap type="BizStore" id="BizStoreResult">
+        <result property="storeId"    column="store_id"    />
+        <result property="storeName"    column="store_name"    />
+        <result property="businessStatus"    column="business_status"    />
+        <result property="packAmount"    column="pack_amount"    />
+        <result property="deliveryAmount"    column="delivery_amount"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="updateBy"    column="update_by"    />
+    </resultMap>
+
+    <sql id="selectBizStoreVo">
+        select store_id, store_name, business_status, pack_amount, delivery_amount, create_time, create_by, update_time, update_by from biz_store
+    </sql>
+
+    <select id="selectBizStoreList" parameterType="BizStore" resultMap="BizStoreResult">
+        <include refid="selectBizStoreVo"/>
+        <where>  
+            <if test="storeName != null  and storeName != ''"> and store_name like concat('%', #{storeName}, '%')</if>
+            <if test="businessStatus != null  and businessStatus != ''"> and business_status = #{businessStatus}</if>
+            <if test="packAmount != null "> and pack_amount = #{packAmount}</if>
+            <if test="deliveryAmount != null "> and delivery_amount = #{deliveryAmount}</if>
+        </where>
+    </select>
+    
+    <select id="selectBizStoreByStoreId" parameterType="Long" resultMap="BizStoreResult">
+        <include refid="selectBizStoreVo"/>
+        where store_id = #{storeId}
+    </select>
+        
+    <insert id="insertBizStore" parameterType="BizStore" useGeneratedKeys="true" keyProperty="storeId">
+        insert into biz_store
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="storeName != null and storeName != ''">store_name,</if>
+            <if test="businessStatus != null and businessStatus != ''">business_status,</if>
+            <if test="packAmount != null">pack_amount,</if>
+            <if test="deliveryAmount != null">delivery_amount,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="updateBy != null">update_by,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="storeName != null and storeName != ''">#{storeName},</if>
+            <if test="businessStatus != null and businessStatus != ''">#{businessStatus},</if>
+            <if test="packAmount != null">#{packAmount},</if>
+            <if test="deliveryAmount != null">#{deliveryAmount},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBizStore" parameterType="BizStore">
+        update biz_store
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="storeName != null and storeName != ''">store_name = #{storeName},</if>
+            <if test="businessStatus != null and businessStatus != ''">business_status = #{businessStatus},</if>
+            <if test="packAmount != null">pack_amount = #{packAmount},</if>
+            <if test="deliveryAmount != null">delivery_amount = #{deliveryAmount},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+        </trim>
+        where store_id = #{storeId}
+    </update>
+
+    <delete id="deleteBizStoreByStoreId" parameterType="Long">
+        delete from biz_store where store_id = #{storeId}
+    </delete>
+
+    <delete id="deleteBizStoreByStoreIds" parameterType="String">
+        delete from biz_store where store_id in 
+        <foreach item="storeId" collection="array" open="(" separator="," close=")">
+            #{storeId}
+        </foreach>
+    </delete>
+</mapper>

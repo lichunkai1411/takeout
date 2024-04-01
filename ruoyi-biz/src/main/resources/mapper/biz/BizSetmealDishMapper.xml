@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.biz.mapper.BizSetmealDishMapper">
+    
+    <resultMap type="BizSetmealDish" id="BizSetmealDishResult">
+        <result property="setmealId"    column="setmeal_id"    />
+        <result property="dishId"    column="dish_id"    />
+        <result property="copies"    column="copies"    />
+    </resultMap>
+
+    <sql id="selectBizSetmealDishVo">
+        select setmeal_id, dish_id, copies from biz_setmeal_dish
+    </sql>
+
+    <select id="selectBizSetmealDishList" parameterType="BizSetmealDish" resultMap="BizSetmealDishResult">
+        <include refid="selectBizSetmealDishVo"/>
+        <where>  
+            <if test="copies != null "> and copies = #{copies}</if>
+        </where>
+    </select>
+    
+    <select id="selectBizSetmealDishBySetmealId" parameterType="Long" resultMap="BizSetmealDishResult">
+        <include refid="selectBizSetmealDishVo"/>
+        where setmeal_id = #{setmealId}
+    </select>
+        
+    <insert id="insertBizSetmealDish" parameterType="BizSetmealDish">
+        insert into biz_setmeal_dish
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="setmealId != null">setmeal_id,</if>
+            <if test="dishId != null">dish_id,</if>
+            <if test="copies != null">copies,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="setmealId != null">#{setmealId},</if>
+            <if test="dishId != null">#{dishId},</if>
+            <if test="copies != null">#{copies},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBizSetmealDish" parameterType="BizSetmealDish">
+        update biz_setmeal_dish
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="dishId != null">dish_id = #{dishId},</if>
+            <if test="copies != null">copies = #{copies},</if>
+        </trim>
+        where setmeal_id = #{setmealId}
+    </update>
+
+    <delete id="deleteBizSetmealDishBySetmealId" parameterType="Long">
+        delete from biz_setmeal_dish where setmeal_id = #{setmealId}
+    </delete>
+
+    <delete id="deleteBizSetmealDishBySetmealIds" parameterType="String">
+        delete from biz_setmeal_dish where setmeal_id in 
+        <foreach item="setmealId" collection="array" open="(" separator="," close=")">
+            #{setmealId}
+        </foreach>
+    </delete>
+</mapper>
