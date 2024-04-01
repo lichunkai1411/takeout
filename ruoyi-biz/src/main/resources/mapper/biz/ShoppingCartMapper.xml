@@ -2,9 +2,9 @@
 <!DOCTYPE mapper
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.ruoyi.biz.mapper.BizShoppingCartMapper">
+<mapper namespace="com.ruoyi.biz.mapper.ShoppingCartMapper">
     
-    <resultMap type="BizShoppingCart" id="BizShoppingCartResult">
+    <resultMap type="ShoppingCart" id="ShoppingCartResult">
         <result property="shopId"    column="shop_id"    />
         <result property="userId"    column="user_id"    />
         <result property="productId"    column="product_id"    />
@@ -13,12 +13,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="dishFlavor"    column="dish_flavor"    />
     </resultMap>
 
-    <sql id="selectBizShoppingCartVo">
+    <sql id="selectShoppingCartVo">
         select shop_id, user_id, product_id, product_type, product_number, dish_flavor from biz_shopping_cart
     </sql>
 
-    <select id="selectBizShoppingCartList" parameterType="BizShoppingCart" resultMap="BizShoppingCartResult">
-        <include refid="selectBizShoppingCartVo"/>
+    <select id="selectShoppingCartList" parameterType="ShoppingCart" resultMap="ShoppingCartResult">
+        <include refid="selectShoppingCartVo"/>
         <where>  
             <if test="userId != null "> and user_id = #{userId}</if>
             <if test="productId != null "> and product_id = #{productId}</if>
@@ -28,12 +28,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </where>
     </select>
     
-    <select id="selectBizShoppingCartByShopId" parameterType="Long" resultMap="BizShoppingCartResult">
-        <include refid="selectBizShoppingCartVo"/>
+    <select id="selectShoppingCartByShopId" parameterType="Long" resultMap="ShoppingCartResult">
+        <include refid="selectShoppingCartVo"/>
         where shop_id = #{shopId}
     </select>
         
-    <insert id="insertBizShoppingCart" parameterType="BizShoppingCart" useGeneratedKeys="true" keyProperty="shopId">
+    <insert id="insertShoppingCart" parameterType="ShoppingCart" useGeneratedKeys="true" keyProperty="shopId">
         insert into biz_shopping_cart
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="userId != null">user_id,</if>
@@ -51,7 +51,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
          </trim>
     </insert>
 
-    <update id="updateBizShoppingCart" parameterType="BizShoppingCart">
+    <update id="updateShoppingCart" parameterType="ShoppingCart">
         update biz_shopping_cart
         <trim prefix="SET" suffixOverrides=",">
             <if test="userId != null">user_id = #{userId},</if>
@@ -63,11 +63,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         where shop_id = #{shopId}
     </update>
 
-    <delete id="deleteBizShoppingCartByShopId" parameterType="Long">
+    <delete id="deleteShoppingCartByShopId" parameterType="Long">
         delete from biz_shopping_cart where shop_id = #{shopId}
     </delete>
 
-    <delete id="deleteBizShoppingCartByShopIds" parameterType="String">
+    <delete id="deleteShoppingCartByShopIds" parameterType="String">
         delete from biz_shopping_cart where shop_id in 
         <foreach item="shopId" collection="array" open="(" separator="," close=")">
             #{shopId}

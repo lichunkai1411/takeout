@@ -1,7 +1,7 @@
 package com.ruoyi.biz.mapper;
 
 import java.util.List;
-import com.ruoyi.biz.domain.BizShoppingCart;
+import com.ruoyi.biz.domain.ShoppingCart;
 
 /**
  * 购物车Mapper接口
@@ -9,7 +9,7 @@ import com.ruoyi.biz.domain.BizShoppingCart;
  * @author ruoyi
  * @date 2024-04-01
  */
-public interface BizShoppingCartMapper 
+public interface ShoppingCartMapper 
 {
     /**
      * 查询购物车
@@ -17,31 +17,31 @@ public interface BizShoppingCartMapper
      * @param shopId 购物车主键
      * @return 购物车
      */
-    public BizShoppingCart selectBizShoppingCartByShopId(Long shopId);
+    public ShoppingCart selectShoppingCartByShopId(Long shopId);
 
     /**
      * 查询购物车列表
      * 
-     * @param bizShoppingCart 购物车
+     * @param shoppingCart 购物车
      * @return 购物车集合
      */
-    public List<BizShoppingCart> selectBizShoppingCartList(BizShoppingCart bizShoppingCart);
+    public List<ShoppingCart> selectShoppingCartList(ShoppingCart shoppingCart);
 
     /**
      * 新增购物车
      * 
-     * @param bizShoppingCart 购物车
+     * @param shoppingCart 购物车
      * @return 结果
      */
-    public int insertBizShoppingCart(BizShoppingCart bizShoppingCart);
+    public int insertShoppingCart(ShoppingCart shoppingCart);
 
     /**
      * 修改购物车
      * 
-     * @param bizShoppingCart 购物车
+     * @param shoppingCart 购物车
      * @return 结果
      */
-    public int updateBizShoppingCart(BizShoppingCart bizShoppingCart);
+    public int updateShoppingCart(ShoppingCart shoppingCart);
 
     /**
      * 删除购物车
@@ -49,7 +49,7 @@ public interface BizShoppingCartMapper
      * @param shopId 购物车主键
      * @return 结果
      */
-    public int deleteBizShoppingCartByShopId(Long shopId);
+    public int deleteShoppingCartByShopId(Long shopId);
 
     /**
      * 批量删除购物车
@@ -57,5 +57,5 @@ public interface BizShoppingCartMapper
      * @param shopIds 需要删除的数据主键集合
      * @return 结果
      */
-    public int deleteBizShoppingCartByShopIds(Long[] shopIds);
+    public int deleteShoppingCartByShopIds(Long[] shopIds);
 }

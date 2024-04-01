@@ -11,7 +11,7 @@ import com.ruoyi.common.core.domain.BaseEntity;
  * @author ruoyi
  * @date 2024-04-01
  */
-public class BizSetmealDish extends BaseEntity
+public class SetmealDish extends BaseEntity
 {
     private static final long serialVersionUID = 1L;
 

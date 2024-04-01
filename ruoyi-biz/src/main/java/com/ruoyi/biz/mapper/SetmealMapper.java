@@ -1,7 +1,7 @@
 package com.ruoyi.biz.mapper;
 
 import java.util.List;
-import com.ruoyi.biz.domain.BizSetmeal;
+import com.ruoyi.biz.domain.Setmeal;
 
 /**
  * 套餐Mapper接口
@@ -9,7 +9,7 @@ import com.ruoyi.biz.domain.BizSetmeal;
  * @author ruoyi
  * @date 2024-04-01
  */
-public interface BizSetmealMapper 
+public interface SetmealMapper 
 {
     /**
      * 查询套餐
@@ -17,31 +17,31 @@ public interface BizSetmealMapper
      * @param setmealId 套餐主键
      * @return 套餐
      */
-    public BizSetmeal selectBizSetmealBySetmealId(Long setmealId);
+    public Setmeal selectSetmealBySetmealId(Long setmealId);
 
     /**
      * 查询套餐列表
      * 
-     * @param bizSetmeal 套餐
+     * @param setmeal 套餐
      * @return 套餐集合
      */
-    public List<BizSetmeal> selectBizSetmealList(BizSetmeal bizSetmeal);
+    public List<Setmeal> selectSetmealList(Setmeal setmeal);
 
     /**
      * 新增套餐
      * 
-     * @param bizSetmeal 套餐
+     * @param setmeal 套餐
      * @return 结果
      */
-    public int insertBizSetmeal(BizSetmeal bizSetmeal);
+    public int insertSetmeal(Setmeal setmeal);
 
     /**
      * 修改套餐
      * 
-     * @param bizSetmeal 套餐
+     * @param setmeal 套餐
      * @return 结果
      */
-    public int updateBizSetmeal(BizSetmeal bizSetmeal);
+    public int updateSetmeal(Setmeal setmeal);
 
     /**
      * 删除套餐
@@ -49,7 +49,7 @@ public interface BizSetmealMapper
      * @param setmealId 套餐主键
      * @return 结果
      */
-    public int deleteBizSetmealBySetmealId(Long setmealId);
+    public int deleteSetmealBySetmealId(Long setmealId);
 
     /**
      * 批量删除套餐
@@ -57,5 +57,5 @@ public interface BizSetmealMapper
      * @param setmealIds 需要删除的数据主键集合
      * @return 结果
      */
-    public int deleteBizSetmealBySetmealIds(Long[] setmealIds);
+    public int deleteSetmealBySetmealIds(Long[] setmealIds);
 }

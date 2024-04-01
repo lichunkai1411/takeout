@@ -2,9 +2,9 @@
 <!DOCTYPE mapper
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.ruoyi.biz.mapper.BizDishMapper">
+<mapper namespace="com.ruoyi.biz.mapper.DishMapper">
     
-    <resultMap type="BizDish" id="BizDishResult">
+    <resultMap type="Dish" id="DishResult">
         <result property="dishId"    column="dish_id"    />
         <result property="categoryId"    column="category_id"    />
         <result property="dishName"    column="dish_name"    />
@@ -18,12 +18,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="updateBy"    column="update_by"    />
     </resultMap>
 
-    <sql id="selectBizDishVo">
+    <sql id="selectDishVo">
         select dish_id, category_id, dish_name, dish_price, dish_image, description, sale_status, create_time, create_by, update_time, update_by from biz_dish
     </sql>
 
-    <select id="selectBizDishList" parameterType="BizDish" resultMap="BizDishResult">
-        <include refid="selectBizDishVo"/>
+    <select id="selectDishList" parameterType="Dish" resultMap="DishResult">
+        <include refid="selectDishVo"/>
         <where>  
             <if test="categoryId != null "> and category_id = #{categoryId}</if>
             <if test="dishName != null  and dishName != ''"> and dish_name like concat('%', #{dishName}, '%')</if>
@@ -34,12 +34,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </where>
     </select>
     
-    <select id="selectBizDishByDishId" parameterType="Long" resultMap="BizDishResult">
-        <include refid="selectBizDishVo"/>
+    <select id="selectDishByDishId" parameterType="Long" resultMap="DishResult">
+        <include refid="selectDishVo"/>
         where dish_id = #{dishId}
     </select>
         
-    <insert id="insertBizDish" parameterType="BizDish" useGeneratedKeys="true" keyProperty="dishId">
+    <insert id="insertDish" parameterType="Dish" useGeneratedKeys="true" keyProperty="dishId">
         insert into biz_dish
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="categoryId != null">category_id,</if>
@@ -67,7 +67,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
          </trim>
     </insert>
 
-    <update id="updateBizDish" parameterType="BizDish">
+    <update id="updateDish" parameterType="Dish">
         update biz_dish
         <trim prefix="SET" suffixOverrides=",">
             <if test="categoryId != null">category_id = #{categoryId},</if>
@@ -84,11 +84,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         where dish_id = #{dishId}
     </update>
 
-    <delete id="deleteBizDishByDishId" parameterType="Long">
+    <delete id="deleteDishByDishId" parameterType="Long">
         delete from biz_dish where dish_id = #{dishId}
     </delete>
 
-    <delete id="deleteBizDishByDishIds" parameterType="String">
+    <delete id="deleteDishByDishIds" parameterType="String">
         delete from biz_dish where dish_id in 
         <foreach item="dishId" collection="array" open="(" separator="," close=")">
             #{dishId}

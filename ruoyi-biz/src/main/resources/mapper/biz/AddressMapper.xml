@@ -2,9 +2,9 @@
 <!DOCTYPE mapper
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.ruoyi.biz.mapper.BizAddressMapper">
+<mapper namespace="com.ruoyi.biz.mapper.AddressMapper">
     
-    <resultMap type="BizAddress" id="BizAddressResult">
+    <resultMap type="Address" id="AddressResult">
         <result property="addressId"    column="address_id"    />
         <result property="userId"    column="user_id"    />
         <result property="consignee"    column="consignee"    />
@@ -21,12 +21,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="defaulted"    column="defaulted"    />
     </resultMap>
 
-    <sql id="selectBizAddressVo">
+    <sql id="selectAddressVo">
         select address_id, user_id, consignee, sex, phone, province_code, province_name, city_code, city_name, district_code, district_name, detail, label, defaulted from biz_address
     </sql>
 
-    <select id="selectBizAddressList" parameterType="BizAddress" resultMap="BizAddressResult">
-        <include refid="selectBizAddressVo"/>
+    <select id="selectAddressList" parameterType="Address" resultMap="AddressResult">
+        <include refid="selectAddressVo"/>
         <where>  
             <if test="userId != null "> and user_id = #{userId}</if>
             <if test="consignee != null  and consignee != ''"> and consignee = #{consignee}</if>
@@ -44,12 +44,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </where>
     </select>
     
-    <select id="selectBizAddressByAddressId" parameterType="Long" resultMap="BizAddressResult">
-        <include refid="selectBizAddressVo"/>
+    <select id="selectAddressByAddressId" parameterType="Long" resultMap="AddressResult">
+        <include refid="selectAddressVo"/>
         where address_id = #{addressId}
     </select>
         
-    <insert id="insertBizAddress" parameterType="BizAddress" useGeneratedKeys="true" keyProperty="addressId">
+    <insert id="insertAddress" parameterType="Address" useGeneratedKeys="true" keyProperty="addressId">
         insert into biz_address
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="userId != null">user_id,</if>
@@ -83,7 +83,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
          </trim>
     </insert>
 
-    <update id="updateBizAddress" parameterType="BizAddress">
+    <update id="updateAddress" parameterType="Address">
         update biz_address
         <trim prefix="SET" suffixOverrides=",">
             <if test="userId != null">user_id = #{userId},</if>
@@ -103,11 +103,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         where address_id = #{addressId}
     </update>
 
-    <delete id="deleteBizAddressByAddressId" parameterType="Long">
+    <delete id="deleteAddressByAddressId" parameterType="Long">
         delete from biz_address where address_id = #{addressId}
     </delete>
 
-    <delete id="deleteBizAddressByAddressIds" parameterType="String">
+    <delete id="deleteAddressByAddressIds" parameterType="String">
         delete from biz_address where address_id in 
         <foreach item="addressId" collection="array" open="(" separator="," close=")">
             #{addressId}

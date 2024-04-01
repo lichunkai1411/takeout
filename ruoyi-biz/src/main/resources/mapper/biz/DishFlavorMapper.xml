@@ -2,31 +2,31 @@
 <!DOCTYPE mapper
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.ruoyi.biz.mapper.BizDishFlavorMapper">
+<mapper namespace="com.ruoyi.biz.mapper.DishFlavorMapper">
     
-    <resultMap type="BizDishFlavor" id="BizDishFlavorResult">
+    <resultMap type="DishFlavor" id="DishFlavorResult">
         <result property="dishId"    column="dish_id"    />
         <result property="flavorType"    column="flavor_type"    />
         <result property="flavorOpt"    column="flavor_opt"    />
     </resultMap>
 
-    <sql id="selectBizDishFlavorVo">
+    <sql id="selectDishFlavorVo">
         select dish_id, flavor_type, flavor_opt from biz_dish_flavor
     </sql>
 
-    <select id="selectBizDishFlavorList" parameterType="BizDishFlavor" resultMap="BizDishFlavorResult">
-        <include refid="selectBizDishFlavorVo"/>
+    <select id="selectDishFlavorList" parameterType="DishFlavor" resultMap="DishFlavorResult">
+        <include refid="selectDishFlavorVo"/>
         <where>  
             <if test="flavorOpt != null  and flavorOpt != ''"> and flavor_opt = #{flavorOpt}</if>
         </where>
     </select>
     
-    <select id="selectBizDishFlavorByDishId" parameterType="Long" resultMap="BizDishFlavorResult">
-        <include refid="selectBizDishFlavorVo"/>
+    <select id="selectDishFlavorByDishId" parameterType="Long" resultMap="DishFlavorResult">
+        <include refid="selectDishFlavorVo"/>
         where dish_id = #{dishId}
     </select>
         
-    <insert id="insertBizDishFlavor" parameterType="BizDishFlavor">
+    <insert id="insertDishFlavor" parameterType="DishFlavor">
         insert into biz_dish_flavor
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="dishId != null">dish_id,</if>
@@ -40,7 +40,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
          </trim>
     </insert>
 
-    <update id="updateBizDishFlavor" parameterType="BizDishFlavor">
+    <update id="updateDishFlavor" parameterType="DishFlavor">
         update biz_dish_flavor
         <trim prefix="SET" suffixOverrides=",">
             <if test="flavorType != null">flavor_type = #{flavorType},</if>
@@ -49,11 +49,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         where dish_id = #{dishId}
     </update>
 
-    <delete id="deleteBizDishFlavorByDishId" parameterType="Long">
+    <delete id="deleteDishFlavorByDishId" parameterType="Long">
         delete from biz_dish_flavor where dish_id = #{dishId}
     </delete>
 
-    <delete id="deleteBizDishFlavorByDishIds" parameterType="String">
+    <delete id="deleteDishFlavorByDishIds" parameterType="String">
         delete from biz_dish_flavor where dish_id in 
         <foreach item="dishId" collection="array" open="(" separator="," close=")">
             #{dishId}

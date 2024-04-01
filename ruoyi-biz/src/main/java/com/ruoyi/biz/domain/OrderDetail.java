@@ -12,7 +12,7 @@ import com.ruoyi.common.core.domain.BaseEntity;
  * @author ruoyi
  * @date 2024-04-01
  */
-public class BizOrderDetail extends BaseEntity
+public class OrderDetail extends BaseEntity
 {
     private static final long serialVersionUID = 1L;
 

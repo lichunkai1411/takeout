@@ -1,7 +1,7 @@
 package com.ruoyi.biz.mapper;
 
 import java.util.List;
-import com.ruoyi.biz.domain.BizDish;
+import com.ruoyi.biz.domain.Dish;
 
 /**
  * 菜品Mapper接口
@@ -9,7 +9,7 @@ import com.ruoyi.biz.domain.BizDish;
  * @author ruoyi
  * @date 2024-04-01
  */
-public interface BizDishMapper 
+public interface DishMapper 
 {
     /**
      * 查询菜品
@@ -17,31 +17,31 @@ public interface BizDishMapper
      * @param dishId 菜品主键
      * @return 菜品
      */
-    public BizDish selectBizDishByDishId(Long dishId);
+    public Dish selectDishByDishId(Long dishId);
 
     /**
      * 查询菜品列表
      * 
-     * @param bizDish 菜品
+     * @param dish 菜品
      * @return 菜品集合
      */
-    public List<BizDish> selectBizDishList(BizDish bizDish);
+    public List<Dish> selectDishList(Dish dish);
 
     /**
      * 新增菜品
      * 
-     * @param bizDish 菜品
+     * @param dish 菜品
      * @return 结果
      */
-    public int insertBizDish(BizDish bizDish);
+    public int insertDish(Dish dish);
 
     /**
      * 修改菜品
      * 
-     * @param bizDish 菜品
+     * @param dish 菜品
      * @return 结果
      */
-    public int updateBizDish(BizDish bizDish);
+    public int updateDish(Dish dish);
 
     /**
      * 删除菜品
@@ -49,7 +49,7 @@ public interface BizDishMapper
      * @param dishId 菜品主键
      * @return 结果
      */
-    public int deleteBizDishByDishId(Long dishId);
+    public int deleteDishByDishId(Long dishId);
 
     /**
      * 批量删除菜品
@@ -57,5 +57,5 @@ public interface BizDishMapper
      * @param dishIds 需要删除的数据主键集合
      * @return 结果
      */
-    public int deleteBizDishByDishIds(Long[] dishIds);
+    public int deleteDishByDishIds(Long[] dishIds);
 }

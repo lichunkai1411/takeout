@@ -2,9 +2,9 @@
 <!DOCTYPE mapper
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.ruoyi.biz.mapper.BizOrderDetailMapper">
+<mapper namespace="com.ruoyi.biz.mapper.OrderDetailMapper">
     
-    <resultMap type="BizOrderDetail" id="BizOrderDetailResult">
+    <resultMap type="OrderDetail" id="OrderDetailResult">
         <result property="orderDetailId"    column="order_detail_id"    />
         <result property="orderId"    column="order_id"    />
         <result property="productId"    column="product_id"    />
@@ -15,12 +15,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="productNumber"    column="product_number"    />
     </resultMap>
 
-    <sql id="selectBizOrderDetailVo">
+    <sql id="selectOrderDetailVo">
         select order_detail_id, order_id, product_id, product_type, product_image, product_name, product_price, product_number from biz_order_detail
     </sql>
 
-    <select id="selectBizOrderDetailList" parameterType="BizOrderDetail" resultMap="BizOrderDetailResult">
-        <include refid="selectBizOrderDetailVo"/>
+    <select id="selectOrderDetailList" parameterType="OrderDetail" resultMap="OrderDetailResult">
+        <include refid="selectOrderDetailVo"/>
         <where>  
             <if test="orderId != null "> and order_id = #{orderId}</if>
             <if test="productId != null "> and product_id = #{productId}</if>
@@ -32,12 +32,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </where>
     </select>
     
-    <select id="selectBizOrderDetailByOrderDetailId" parameterType="Long" resultMap="BizOrderDetailResult">
-        <include refid="selectBizOrderDetailVo"/>
+    <select id="selectOrderDetailByOrderDetailId" parameterType="Long" resultMap="OrderDetailResult">
+        <include refid="selectOrderDetailVo"/>
         where order_detail_id = #{orderDetailId}
     </select>
         
-    <insert id="insertBizOrderDetail" parameterType="BizOrderDetail" useGeneratedKeys="true" keyProperty="orderDetailId">
+    <insert id="insertOrderDetail" parameterType="OrderDetail" useGeneratedKeys="true" keyProperty="orderDetailId">
         insert into biz_order_detail
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="orderId != null">order_id,</if>
@@ -59,7 +59,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
          </trim>
     </insert>
 
-    <update id="updateBizOrderDetail" parameterType="BizOrderDetail">
+    <update id="updateOrderDetail" parameterType="OrderDetail">
         update biz_order_detail
         <trim prefix="SET" suffixOverrides=",">
             <if test="orderId != null">order_id = #{orderId},</if>
@@ -73,11 +73,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         where order_detail_id = #{orderDetailId}
     </update>
 
-    <delete id="deleteBizOrderDetailByOrderDetailId" parameterType="Long">
+    <delete id="deleteOrderDetailByOrderDetailId" parameterType="Long">
         delete from biz_order_detail where order_detail_id = #{orderDetailId}
     </delete>
 
-    <delete id="deleteBizOrderDetailByOrderDetailIds" parameterType="String">
+    <delete id="deleteOrderDetailByOrderDetailIds" parameterType="String">
         delete from biz_order_detail where order_detail_id in 
         <foreach item="orderDetailId" collection="array" open="(" separator="," close=")">
             #{orderDetailId}

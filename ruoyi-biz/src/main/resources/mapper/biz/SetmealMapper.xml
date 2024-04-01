@@ -2,9 +2,9 @@
 <!DOCTYPE mapper
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.ruoyi.biz.mapper.BizSetmealMapper">
+<mapper namespace="com.ruoyi.biz.mapper.SetmealMapper">
     
-    <resultMap type="BizSetmeal" id="BizSetmealResult">
+    <resultMap type="Setmeal" id="SetmealResult">
         <result property="setmealId"    column="setmeal_id"    />
         <result property="categoryId"    column="category_id"    />
         <result property="setmealName"    column="setmeal_name"    />
@@ -18,12 +18,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="updateBy"    column="update_by"    />
     </resultMap>
 
-    <sql id="selectBizSetmealVo">
+    <sql id="selectSetmealVo">
         select setmeal_id, category_id, setmeal_name, setmeal_price, setmeal_image, sale_status, description, create_time, create_by, update_time, update_by from biz_setmeal
     </sql>
 
-    <select id="selectBizSetmealList" parameterType="BizSetmeal" resultMap="BizSetmealResult">
-        <include refid="selectBizSetmealVo"/>
+    <select id="selectSetmealList" parameterType="Setmeal" resultMap="SetmealResult">
+        <include refid="selectSetmealVo"/>
         <where>  
             <if test="categoryId != null "> and category_id = #{categoryId}</if>
             <if test="setmealName != null  and setmealName != ''"> and setmeal_name like concat('%', #{setmealName}, '%')</if>
@@ -34,12 +34,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </where>
     </select>
     
-    <select id="selectBizSetmealBySetmealId" parameterType="Long" resultMap="BizSetmealResult">
-        <include refid="selectBizSetmealVo"/>
+    <select id="selectSetmealBySetmealId" parameterType="Long" resultMap="SetmealResult">
+        <include refid="selectSetmealVo"/>
         where setmeal_id = #{setmealId}
     </select>
         
-    <insert id="insertBizSetmeal" parameterType="BizSetmeal" useGeneratedKeys="true" keyProperty="setmealId">
+    <insert id="insertSetmeal" parameterType="Setmeal" useGeneratedKeys="true" keyProperty="setmealId">
         insert into biz_setmeal
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="categoryId != null">category_id,</if>
@@ -67,7 +67,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
          </trim>
     </insert>
 
-    <update id="updateBizSetmeal" parameterType="BizSetmeal">
+    <update id="updateSetmeal" parameterType="Setmeal">
         update biz_setmeal
         <trim prefix="SET" suffixOverrides=",">
             <if test="categoryId != null">category_id = #{categoryId},</if>
@@ -84,11 +84,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         where setmeal_id = #{setmealId}
     </update>
 
-    <delete id="deleteBizSetmealBySetmealId" parameterType="Long">
+    <delete id="deleteSetmealBySetmealId" parameterType="Long">
         delete from biz_setmeal where setmeal_id = #{setmealId}
     </delete>
 
-    <delete id="deleteBizSetmealBySetmealIds" parameterType="String">
+    <delete id="deleteSetmealBySetmealIds" parameterType="String">
         delete from biz_setmeal where setmeal_id in 
         <foreach item="setmealId" collection="array" open="(" separator="," close=")">
             #{setmealId}

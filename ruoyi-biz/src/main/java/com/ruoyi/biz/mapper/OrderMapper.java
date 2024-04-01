@@ -1,7 +1,7 @@
 package com.ruoyi.biz.mapper;
 
 import java.util.List;
-import com.ruoyi.biz.domain.BizOrder;
+import com.ruoyi.biz.domain.Order;
 
 /**
  * 订单Mapper接口
@@ -9,7 +9,7 @@ import com.ruoyi.biz.domain.BizOrder;
  * @author ruoyi
  * @date 2024-04-01
  */
-public interface BizOrderMapper 
+public interface OrderMapper 
 {
     /**
      * 查询订单
@@ -17,31 +17,31 @@ public interface BizOrderMapper
      * @param orderId 订单主键
      * @return 订单
      */
-    public BizOrder selectBizOrderByOrderId(Long orderId);
+    public Order selectOrderByOrderId(Long orderId);
 
     /**
      * 查询订单列表
      * 
-     * @param bizOrder 订单
+     * @param order 订单
      * @return 订单集合
      */
-    public List<BizOrder> selectBizOrderList(BizOrder bizOrder);
+    public List<Order> selectOrderList(Order order);
 
     /**
      * 新增订单
      * 
-     * @param bizOrder 订单
+     * @param order 订单
      * @return 结果
      */
-    public int insertBizOrder(BizOrder bizOrder);
+    public int insertOrder(Order order);
 
     /**
      * 修改订单
      * 
-     * @param bizOrder 订单
+     * @param order 订单
      * @return 结果
      */
-    public int updateBizOrder(BizOrder bizOrder);
+    public int updateOrder(Order order);
 
     /**
      * 删除订单
@@ -49,7 +49,7 @@ public interface BizOrderMapper
      * @param orderId 订单主键
      * @return 结果
      */
-    public int deleteBizOrderByOrderId(Long orderId);
+    public int deleteOrderByOrderId(Long orderId);
 
     /**
      * 批量删除订单
@@ -57,5 +57,5 @@ public interface BizOrderMapper
      * @param orderIds 需要删除的数据主键集合
      * @return 结果
      */
-    public int deleteBizOrderByOrderIds(Long[] orderIds);
+    public int deleteOrderByOrderIds(Long[] orderIds);
 }

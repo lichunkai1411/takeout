@@ -12,7 +12,7 @@
     <artifactId>ruoyi-biz</artifactId>
 
     <description>
-        system系统模块
+        biz系统模块
     </description>
 
     <dependencies>

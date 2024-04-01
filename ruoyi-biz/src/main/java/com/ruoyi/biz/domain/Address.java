@@ -11,7 +11,7 @@ import com.ruoyi.common.core.domain.BaseEntity;
  * @author ruoyi
  * @date 2024-04-01
  */
-public class BizAddress extends BaseEntity
+public class Address extends BaseEntity
 {
     private static final long serialVersionUID = 1L;
 

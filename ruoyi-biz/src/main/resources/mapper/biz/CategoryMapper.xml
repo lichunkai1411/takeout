@@ -2,9 +2,9 @@
 <!DOCTYPE mapper
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.ruoyi.biz.mapper.BizCategoryMapper">
+<mapper namespace="com.ruoyi.biz.mapper.CategoryMapper">
     
-    <resultMap type="BizCategory" id="BizCategoryResult">
+    <resultMap type="Category" id="CategoryResult">
         <result property="categoryId"    column="category_id"    />
         <result property="categoryName"    column="category_name"    />
         <result property="categoryType"    column="category_type"    />
@@ -16,12 +16,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="updateBy"    column="update_by"    />
     </resultMap>
 
-    <sql id="selectBizCategoryVo">
+    <sql id="selectCategoryVo">
         select category_id, category_name, category_type, category_status, category_sort, create_time, create_by, update_time, update_by from biz_category
     </sql>
 
-    <select id="selectBizCategoryList" parameterType="BizCategory" resultMap="BizCategoryResult">
-        <include refid="selectBizCategoryVo"/>
+    <select id="selectCategoryList" parameterType="Category" resultMap="CategoryResult">
+        <include refid="selectCategoryVo"/>
         <where>  
             <if test="categoryName != null  and categoryName != ''"> and category_name like concat('%', #{categoryName}, '%')</if>
             <if test="categoryType != null  and categoryType != ''"> and category_type = #{categoryType}</if>
@@ -30,12 +30,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </where>
     </select>
     
-    <select id="selectBizCategoryByCategoryId" parameterType="Long" resultMap="BizCategoryResult">
-        <include refid="selectBizCategoryVo"/>
+    <select id="selectCategoryByCategoryId" parameterType="Long" resultMap="CategoryResult">
+        <include refid="selectCategoryVo"/>
         where category_id = #{categoryId}
     </select>
         
-    <insert id="insertBizCategory" parameterType="BizCategory" useGeneratedKeys="true" keyProperty="categoryId">
+    <insert id="insertCategory" parameterType="Category" useGeneratedKeys="true" keyProperty="categoryId">
         insert into biz_category
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="categoryName != null and categoryName != ''">category_name,</if>
@@ -59,7 +59,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
          </trim>
     </insert>
 
-    <update id="updateBizCategory" parameterType="BizCategory">
+    <update id="updateCategory" parameterType="Category">
         update biz_category
         <trim prefix="SET" suffixOverrides=",">
             <if test="categoryName != null and categoryName != ''">category_name = #{categoryName},</if>
@@ -74,11 +74,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         where category_id = #{categoryId}
     </update>
 
-    <delete id="deleteBizCategoryByCategoryId" parameterType="Long">
+    <delete id="deleteCategoryByCategoryId" parameterType="Long">
         delete from biz_category where category_id = #{categoryId}
     </delete>
 
-    <delete id="deleteBizCategoryByCategoryIds" parameterType="String">
+    <delete id="deleteCategoryByCategoryIds" parameterType="String">
         delete from biz_category where category_id in 
         <foreach item="categoryId" collection="array" open="(" separator="," close=")">
             #{categoryId}
