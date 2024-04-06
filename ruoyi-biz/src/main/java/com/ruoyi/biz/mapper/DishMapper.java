@@ -2,6 +2,8 @@ package com.ruoyi.biz.mapper;
 
 import java.util.List;
 import com.ruoyi.biz.domain.Dish;
+import com.ruoyi.biz.dto.DishListParam;
+import com.ruoyi.biz.dto.DishListVo;
 
 /**
  * 菜品Mapper接口
@@ -21,11 +23,11 @@ public interface DishMapper
 
     /**
      * 查询菜品列表
-     * 
-     * @param dish 菜品
+     *
+     * @param param 菜品
      * @return 菜品集合
      */
-    public List<Dish> selectDishList(Dish dish);
+    public List<DishListVo> selectDishList(DishListParam param);
 
     /**
      * 新增菜品
@@ -58,4 +60,6 @@ public interface DishMapper
      * @return 结果
      */
     public int deleteDishByDishIds(Long[] dishIds);
+
+    int selectDishByCategoryId(Long categoryId);
 }

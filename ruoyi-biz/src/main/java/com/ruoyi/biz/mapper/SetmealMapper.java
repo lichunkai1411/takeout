@@ -2,6 +2,8 @@ package com.ruoyi.biz.mapper;
 
 import java.util.List;
 import com.ruoyi.biz.domain.Setmeal;
+import com.ruoyi.biz.dto.SetmealListParam;
+import com.ruoyi.biz.dto.SetmealListVo;
 
 /**
  * 套餐Mapper接口
@@ -21,11 +23,11 @@ public interface SetmealMapper
 
     /**
      * 查询套餐列表
-     * 
-     * @param setmeal 套餐
+     *
+     * @param param 套餐
      * @return 套餐集合
      */
-    public List<Setmeal> selectSetmealList(Setmeal setmeal);
+    public List<SetmealListVo> selectSetmealList(SetmealListParam param);
 
     /**
      * 新增套餐

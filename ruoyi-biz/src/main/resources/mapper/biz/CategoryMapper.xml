@@ -20,13 +20,22 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         select category_id, category_name, category_type, category_status, category_sort, create_time, create_by, update_time, update_by from biz_category
     </sql>
 
-    <select id="selectCategoryList" parameterType="Category" resultMap="CategoryResult">
-        <include refid="selectCategoryVo"/>
-        <where>  
-            <if test="categoryName != null  and categoryName != ''"> and category_name like concat('%', #{categoryName}, '%')</if>
-            <if test="categoryType != null  and categoryType != ''"> and category_type = #{categoryType}</if>
-            <if test="categoryStatus != null  and categoryStatus != ''"> and category_status = #{categoryStatus}</if>
-            <if test="categorySort != null "> and category_sort = #{categorySort}</if>
+    <select id="selectCategoryList" parameterType="Category">
+        select category_id,
+               category_type,
+               category_name,
+               category_status,
+               category_sort,
+               create_time,
+               create_by
+            from biz_category
+        <where>
+            <if test="categoryName != null  and categoryName != ''">
+                and category_name like concat('%', #{categoryName}, '%')
+            </if>
+            <if test="categoryType != null  and categoryType != ''">
+            and category_type = #{categoryType}
+            </if>
         </where>
     </select>
     
@@ -34,8 +43,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <include refid="selectCategoryVo"/>
         where category_id = #{categoryId}
     </select>
-        
-    <insert id="insertCategory" parameterType="Category" useGeneratedKeys="true" keyProperty="categoryId">
+    <select id="selectCategoryByType" resultType="com.ruoyi.biz.domain.Category">
+        <include refid="selectCategoryVo"/>
+        where category_type = #{categoryType}
+    </select>
+
+    <insert id="insertCategory" parameterType="com.ruoyi.biz.domain.Category">
         insert into biz_category
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="categoryName != null and categoryName != ''">category_name,</if>

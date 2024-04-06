@@ -1,22 +1,25 @@
 package com.ruoyi.web.controller.biz;
 
 import com.ruoyi.biz.domain.Store;
+import com.ruoyi.biz.dto.AddStoreParam;
+import com.ruoyi.biz.dto.EditStoreParam;
+import com.ruoyi.biz.dto.StoreListParam;
+import com.ruoyi.biz.dto.StoreListVo;
 import com.ruoyi.biz.mapper.StoreMapper;
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
+import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.common.utils.DateUtils;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.ruoyi.common.utils.SecurityUtils;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import org.springframework.web.bind.annotation.*;
+import javax.validation.Valid;
+import java.util.List;
 
-/**
- * 店铺管理
- *
- * @author lck
- * @date 2024-04-01
- */
+@Api("店铺管理")
 @RestController
-@RequestMapping("/biz/store")
+@RequestMapping("/biz")
 public class StoreController extends BaseController {
 
     private final StoreMapper storeMapper;
@@ -25,29 +28,44 @@ public class StoreController extends BaseController {
         this.storeMapper = storeMapper;
     }
 
-    // 查询店铺详情
-    @RequestMapping("/get")
-    public AjaxResult get(Long storeId) {
-        return AjaxResult.success(storeMapper.selectStoreByStoreId(storeId));
+    @ApiOperation("获取店铺详情")
+    @GetMapping("/stores/{id}")
+    public AjaxResult getInfo(@PathVariable Long id) {
+        return AjaxResult.success(storeMapper.selectStoreByStoreId(id));
     }
 
-    // 查询店铺列表
-    @RequestMapping("/list")
-    public AjaxResult list(@RequestBody Store store) {
-        return AjaxResult.success(storeMapper.selectStoreList(store));
+    @ApiOperation("获取店铺列表")
+    @GetMapping("/stores")
+    public TableDataInfo getList(StoreListParam param) {
+        startPage();
+        List<StoreListVo> list = storeMapper.selectStoreList(param);
+        return getDataTable(list);
     }
-    // 添加店铺
-    @RequestMapping("/add")
-    public AjaxResult add(@RequestBody Store store) {
+
+    @ApiOperation("添加店铺")
+    @PostMapping("/stores")
+    public AjaxResult addStore(@Valid @RequestBody AddStoreParam param) {
+        Store store = new Store();
+        store.setStoreName(param.getStoreName());
+        store.setBusinessStatus(param.getBusinessStatus());
+        store.setPackAmount(param.getPackAmount());
+        store.setDeliveryAmount(param.getDeliveryAmount());
         store.setCreateTime(DateUtils.getNowDate());
+        store.setCreateBy(SecurityUtils.getUsername());
         storeMapper.insertStore(store);
         return AjaxResult.success();
     }
 
-    // 修改店铺
-    @RequestMapping("/edit")
-    public AjaxResult edit(@RequestBody Store store) {
+    @ApiOperation("修改店铺")
+    @PutMapping("/stores/{id}")
+    public AjaxResult editStore(@PathVariable Long id, @Valid @RequestBody EditStoreParam param) {
+        Store store = storeMapper.selectStoreByStoreId(id);
+        if (store == null) {
+            return error("未找到店铺信息");
+        }
+        store.setStoreName(param.getStoreName());
         store.setUpdateTime(DateUtils.getNowDate());
+        store.setUpdateBy(SecurityUtils.getUsername());
         storeMapper.updateStore(store);
         return AjaxResult.success();
     }

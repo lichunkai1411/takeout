@@ -4,7 +4,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ruoyi.biz.mapper.StoreMapper">
     
-    <resultMap type="Store" id="StoreResult">
+    <resultMap type="com.ruoyi.biz.domain.Store" id="StoreResult">
         <result property="storeId"    column="store_id"    />
         <result property="storeName"    column="store_name"    />
         <result property="businessStatus"    column="business_status"    />
@@ -20,22 +20,37 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         select store_id, store_name, business_status, pack_amount, delivery_amount, create_time, create_by, update_time, update_by from biz_store
     </sql>
 
-    <select id="selectStoreList" parameterType="Store" resultMap="StoreResult">
-        <include refid="selectStoreVo"/>
-        <where>  
-            <if test="storeName != null  and storeName != ''"> and store_name like concat('%', #{storeName}, '%')</if>
-            <if test="businessStatus != null  and businessStatus != ''"> and business_status = #{businessStatus}</if>
-            <if test="packAmount != null "> and pack_amount = #{packAmount}</if>
-            <if test="deliveryAmount != null "> and delivery_amount = #{deliveryAmount}</if>
+    <select id="selectStoreList" resultType="com.ruoyi.biz.dto.StoreListVo">
+        select store_id,
+               store_name,
+               business_status,
+               pack_amount,
+               delivery_amount,
+               create_time,
+               create_by
+        from biz_store
+        <where>
+            <if test="storeName != null and storeName != ''">
+                and store_name like concat('%', #{storeName}, '%')
+            </if>
+            <if test="businessStatus != null and businessStatus != ''">
+                and business_status = #{businessStatus}
+            </if>
+            <if test="createTimeStart != null">
+                and create_time <![CDATA[ >= ]]> date(#{createTimeStart})
+            </if>
+            <if test="createTimeEnd != null">
+                and create_time <![CDATA[ <= ]]> date(#{createTimeEnd})
+            </if>
         </where>
     </select>
     
-    <select id="selectStoreByStoreId" parameterType="Long" resultMap="StoreResult">
+    <select id="selectStoreByStoreId"  resultMap="StoreResult">
         <include refid="selectStoreVo"/>
         where store_id = #{storeId}
     </select>
         
-    <insert id="insertStore" parameterType="Store" useGeneratedKeys="true" keyProperty="storeId">
+    <insert id="insertStore" parameterType="com.ruoyi.biz.domain.Store" >
         insert into biz_store
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="storeName != null and storeName != ''">store_name,</if>
@@ -59,7 +74,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
          </trim>
     </insert>
 
-    <update id="updateStore" parameterType="Store">
+    <update id="updateStore" parameterType="com.ruoyi.biz.domain.Store">
         update biz_store
         <trim prefix="SET" suffixOverrides=",">
             <if test="storeName != null and storeName != ''">store_name = #{storeName},</if>
@@ -74,14 +89,4 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         where store_id = #{storeId}
     </update>
 
-    <delete id="deleteStoreByStoreId" parameterType="Long">
-        delete from biz_store where store_id = #{storeId}
-    </delete>
-
-    <delete id="deleteStoreByStoreIds" parameterType="String">
-        delete from biz_store where store_id in 
-        <foreach item="storeId" collection="array" open="(" separator="," close=")">
-            #{storeId}
-        </foreach>
-    </delete>
 </mapper>

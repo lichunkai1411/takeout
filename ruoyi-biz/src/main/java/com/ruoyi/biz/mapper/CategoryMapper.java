@@ -2,6 +2,8 @@ package com.ruoyi.biz.mapper;
 
 import java.util.List;
 import com.ruoyi.biz.domain.Category;
+import com.ruoyi.biz.dto.CategoryListParam;
+import com.ruoyi.biz.dto.CategoryListVo;
 
 /**
  * 分类Mapper接口
@@ -22,10 +24,10 @@ public interface CategoryMapper
     /**
      * 查询分类列表
      * 
-     * @param category 分类
+     * @param param 分类
      * @return 分类集合
      */
-    public List<Category> selectCategoryList(Category category);
+    public List<CategoryListVo> selectCategoryList(CategoryListParam param);
 
     /**
      * 新增分类
@@ -58,4 +60,6 @@ public interface CategoryMapper
      * @return 结果
      */
     public int deleteCategoryByCategoryIds(Long[] categoryIds);
+
+    List<Category> selectCategoryByType(String categoryType);
 }

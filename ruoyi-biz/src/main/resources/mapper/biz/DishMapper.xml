@@ -38,7 +38,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <include refid="selectDishVo"/>
         where dish_id = #{dishId}
     </select>
-        
+
+    <select id="selectDishByCategoryId" resultType="java.lang.Integer">
+        <include refid="selectDishVo"/>
+        where category_id = #{categoryId}
+    </select>
+
     <insert id="insertDish" parameterType="Dish" useGeneratedKeys="true" keyProperty="dishId">
         insert into biz_dish
         <trim prefix="(" suffix=")" suffixOverrides=",">
