@@ -1,10 +1,7 @@
 package com.ruoyi.web.controller.biz;
 
 import com.ruoyi.biz.domain.Category;
-import com.ruoyi.biz.dto.AddCategoryParam;
-import com.ruoyi.biz.dto.CategoryListParam;
-import com.ruoyi.biz.dto.CategoryListVo;
-import com.ruoyi.biz.dto.EditCategoryParam;
+import com.ruoyi.biz.dto.*;
 import com.ruoyi.biz.mapper.CategoryMapper;
 import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.core.controller.BaseController;
@@ -12,15 +9,14 @@ import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.common.enums.BusinessType;
 import com.ruoyi.common.utils.DateUtils;
-import com.ruoyi.common.utils.DictUtils;
 import com.ruoyi.common.utils.SecurityUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Objects;
 
 import static com.ruoyi.common.enums.OperatorType.MANAGE;
 
@@ -39,6 +35,9 @@ public class CategoryController extends BaseController {
     @ApiOperation("获取分类列表")
     @GetMapping("/categories")
     public TableDataInfo getList(CategoryListParam param) {
+        // 仅获取本店铺下分类
+        Long storeId = SecurityUtils.getLoginUser().getUser().getStoreId();
+        param.setStoreId(storeId);
         startPage();
         List<CategoryListVo> list = categoryMapper.selectCategoryList(param);
         return getDataTable(list);
@@ -49,7 +48,10 @@ public class CategoryController extends BaseController {
     @ApiOperation("添加分类")
     @PostMapping("/categories")
     public AjaxResult addCategory(@Valid @RequestBody AddCategoryParam param) {
+        // 获取用户所在店铺ID
+        Long storeId = SecurityUtils.getLoginUser().getUser().getStoreId();
         Category category = new Category();
+        category.setStoreId(storeId);
         category.setCategoryName(param.getCategoryName());
         category.setCategorySort(param.getCategorySort());
         category.setCategoryType(param.getCategoryType());
@@ -69,6 +71,11 @@ public class CategoryController extends BaseController {
         if (category == null) {
             return AjaxResult.error("分类不存在");
         }
+        // 获取用户所在店铺ID
+        Long storeId = SecurityUtils.getLoginUser().getUser().getStoreId();
+        if (!Objects.equals(storeId,category.getCategoryId())){
+            return AjaxResult.error("只能修改本店铺的分类信息");
+        }
         category.setCategoryName(param.getCategoryName());
         category.setCategorySort(param.getCategorySort());
         category.setCategoryType(param.getCategoryType());
@@ -83,6 +90,15 @@ public class CategoryController extends BaseController {
     @ApiOperation("删除分类")
     @DeleteMapping("/categories/{id}")
     public AjaxResult remove(@PathVariable Long id) {
+        Category category = categoryMapper.selectCategoryByCategoryId(id);
+        if (category == null) {
+            return AjaxResult.error("分类不存在");
+        }
+        // 获取用户所在店铺ID
+        Long storeId = SecurityUtils.getLoginUser().getUser().getStoreId();
+        if (!Objects.equals(storeId,category.getStoreId())){
+            return AjaxResult.error("只能删除本店铺的分类信息");
+        }
         categoryMapper.deleteCategoryByCategoryId(id);
         return AjaxResult.success();
     }
@@ -91,17 +107,17 @@ public class CategoryController extends BaseController {
     @Log(title = "分类管理", businessType = BusinessType.UPDATE, operatorType = MANAGE)
     @ApiOperation("分类状态")
     @PutMapping("/categories/{id}/status")
-    public AjaxResult changeStatus(@PathVariable Long id) {
+    public AjaxResult changeStatus(@PathVariable Long id, @Valid @RequestBody EditCategoryStatusParam param) {
         Category category = categoryMapper.selectCategoryByCategoryId(id);
         if (category == null) {
             return AjaxResult.error("分类不存在");
         }
-        String currentStatus = DictUtils.getDictValue("biz_category_status", category.getCategoryStatus());
-        if ("0".equals(currentStatus) || "禁用".equals(currentStatus)) {
-            category.setCategoryStatus("1");
-        } else {
-            category.setCategoryStatus("0");
+        // 获取用户所在店铺ID
+        Long storeId = SecurityUtils.getLoginUser().getUser().getStoreId();
+        if (!Objects.equals(storeId,category.getStoreId())){
+            return AjaxResult.error("只能修改本店铺的分类信息");
         }
+        category.setCategoryStatus(param.getCategoryStatus());
         category.setUpdateTime(DateUtils.getNowDate());
         category.setUpdateBy(SecurityUtils.getUsername());
         categoryMapper.updateCategory(category);

@@ -89,6 +89,9 @@ public class SysUser extends BaseEntity
     /** 角色ID */
     private Long roleId;
 
+    /** 店铺ID */
+    private Long storeId;
+
     public SysUser()
     {
 
@@ -297,6 +300,14 @@ public class SysUser extends BaseEntity
         this.roleId = roleId;
     }
 
+    public Long getStoreId() {
+        return storeId;
+    }
+
+    public void setStoreId(Long storeId) {
+        this.storeId = storeId;
+    }
+
     @Override
     public String toString() {
         return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
@@ -319,6 +330,7 @@ public class SysUser extends BaseEntity
             .append("updateTime", getUpdateTime())
             .append("remark", getRemark())
             .append("dept", getDept())
+            .append("storeId", getStoreId())
             .toString();
     }
 }

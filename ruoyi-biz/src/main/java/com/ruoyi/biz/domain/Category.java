@@ -18,6 +18,9 @@ public class Category extends BaseEntity
     /** 分类ID */
     private Long categoryId;
 
+    /** 店铺ID */
+    private Long storeId;
+
     /** 分类名称 */
     @Excel(name = "分类名称")
     private String categoryName;
@@ -43,7 +46,16 @@ public class Category extends BaseEntity
     {
         return categoryId;
     }
-    public void setCategoryName(String categoryName) 
+
+    public Long getStoreId() {
+        return storeId;
+    }
+
+    public void setStoreId(Long storeId) {
+        this.storeId = storeId;
+    }
+
+    public void setCategoryName(String categoryName)
     {
         this.categoryName = categoryName;
     }
@@ -84,6 +96,7 @@ public class Category extends BaseEntity
     public String toString() {
         return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
             .append("categoryId", getCategoryId())
+            .append("storeId", getStoreId())
             .append("categoryName", getCategoryName())
             .append("categoryType", getCategoryType())
             .append("categoryStatus", getCategoryStatus())

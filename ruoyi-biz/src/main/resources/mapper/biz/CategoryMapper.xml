@@ -29,14 +29,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
                create_time,
                create_by
             from biz_category
-        <where>
+        where
+            store_id = #{storeId}
             <if test="categoryName != null  and categoryName != ''">
                 and category_name like concat('%', #{categoryName}, '%')
             </if>
             <if test="categoryType != null  and categoryType != ''">
             and category_type = #{categoryType}
             </if>
-        </where>
     </select>
     
     <select id="selectCategoryByCategoryId" parameterType="Long" resultMap="CategoryResult">
@@ -51,6 +51,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <insert id="insertCategory" parameterType="com.ruoyi.biz.domain.Category">
         insert into biz_category
         <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="storeId != null">store_id,</if>
             <if test="categoryName != null and categoryName != ''">category_name,</if>
             <if test="categoryType != null and categoryType != ''">category_type,</if>
             <if test="categoryStatus != null and categoryStatus != ''">category_status,</if>
@@ -61,6 +62,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="updateBy != null">update_by,</if>
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="storeId != null">#{storeId},</if>
             <if test="categoryName != null and categoryName != ''">#{categoryName},</if>
             <if test="categoryType != null and categoryType != ''">#{categoryType},</if>
             <if test="categoryStatus != null and categoryStatus != ''">#{categoryStatus},</if>

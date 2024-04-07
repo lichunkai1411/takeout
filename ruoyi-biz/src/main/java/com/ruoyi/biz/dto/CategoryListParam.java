@@ -13,6 +13,9 @@ public class CategoryListParam {
     @ApiModelProperty("分类类型")
     private String categoryType;
 
+    @ApiModelProperty(value = "店铺ID", hidden = true)
+    private Long storeId;
+
     @ApiModelProperty("页数")
     private Integer pageNum;
 
