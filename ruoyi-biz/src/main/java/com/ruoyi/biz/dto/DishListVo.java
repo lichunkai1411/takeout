@@ -17,7 +17,7 @@ public class DishListVo {
     @ApiModelProperty("分类ID")
     private String categoryId;
 
-    @ApiModelProperty("销卖状态")
+    @ApiModelProperty("售卖状态")
     private String saleStatus;
 
     @ApiModelProperty("菜品价格")

@@ -11,7 +11,7 @@ public class SetmealListParam {
     @ApiModelProperty("套餐名称")
     private String setmealName;
 
-    @ApiModelProperty("销卖状态")
+    @ApiModelProperty("售卖状态")
     private String saleStatus;
 
     @ApiModelProperty("分类ID")

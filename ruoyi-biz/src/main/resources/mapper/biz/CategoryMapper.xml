@@ -20,7 +20,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         select category_id, category_name, category_type, category_status, category_sort, create_time, create_by, update_time, update_by from biz_category
     </sql>
 
-    <select id="selectCategoryList" parameterType="Category">
+    <select id="selectCategoryList">
         select category_id,
                category_type,
                category_name,

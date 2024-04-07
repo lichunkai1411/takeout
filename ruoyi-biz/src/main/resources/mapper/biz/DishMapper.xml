@@ -72,6 +72,28 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
          </trim>
     </insert>
 
+    <insert id="insertDishFlavor" parameterType="dishFlavor">
+        insert into biz_dish_flavor
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="dishId != null">dish_id,</if>
+            <if test="flavorId != null">flavor_type,</if>
+            <if test="flavorOpt != null">flavor_opt,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="dishId != null">#{dishId},</if>
+            <if test="flavorId != null">#{flavorId},</if>
+            <if test="flavorOpt != null">#{flavorOpt},</if>
+        </trim>
+    </insert>
+
+    <insert id="insertDishFlavorBatch" parameterType="dishFlavor">
+        insert into biz_dish_flavor
+            (dish_id,flavor_type,flavor_opt) values
+        <foreach collection="list" item="item" separator="," >
+            (#{item.dishId}, #{item.flavorId}, #{item.flavorOpt})
+        </foreach>
+    </insert>
+
     <update id="updateDish" parameterType="Dish">
         update biz_dish
         <trim prefix="SET" suffixOverrides=",">
@@ -95,6 +117,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     <delete id="deleteDishByDishIds" parameterType="String">
         delete from biz_dish where dish_id in 
+        <foreach item="dishId" collection="array" open="(" separator="," close=")">
+            #{dishId}
+        </foreach>
+    </delete>
+    <delete id="deleteDishFlavorByDishIds">
+        delete from biz_dish_flavor where dish_id in
         <foreach item="dishId" collection="array" open="(" separator="," close=")">
             #{dishId}
         </foreach>

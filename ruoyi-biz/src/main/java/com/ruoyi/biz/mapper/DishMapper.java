@@ -2,6 +2,8 @@ package com.ruoyi.biz.mapper;
 
 import java.util.List;
 import com.ruoyi.biz.domain.Dish;
+import com.ruoyi.biz.domain.DishFlavor;
+import com.ruoyi.biz.dto.DishFlavorDTO;
 import com.ruoyi.biz.dto.DishListParam;
 import com.ruoyi.biz.dto.DishListVo;
 
@@ -62,4 +64,10 @@ public interface DishMapper
     public int deleteDishByDishIds(Long[] dishIds);
 
     int selectDishByCategoryId(Long categoryId);
+
+    void insertDishFlavor(DishFlavor dishFlavor);
+
+    void deleteDishFlavorByDishIds(Long[] ids);
+
+    void insertDishFlavorBatch(List<DishFlavorDTO> flavors);
 }

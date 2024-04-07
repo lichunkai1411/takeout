@@ -16,6 +16,7 @@ public class Dish extends BaseEntity
 {
     private static final long serialVersionUID = 1L;
 
+
     /** 菜品ID */
     private Long dishId;
 
