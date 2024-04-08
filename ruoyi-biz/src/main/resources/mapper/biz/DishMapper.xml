@@ -39,11 +39,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         where dish_id = #{dishId}
     </select>
 
-    <select id="selectDishByCategoryId" resultType="java.lang.Integer">
-        <include refid="selectDishVo"/>
-        where category_id = #{categoryId}
-    </select>
-
     <insert id="insertDish" parameterType="Dish" useGeneratedKeys="true" keyProperty="dishId">
         insert into biz_dish
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -86,14 +81,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </trim>
     </insert>
 
-    <insert id="insertDishFlavorBatch" parameterType="dishFlavor">
-        insert into biz_dish_flavor
-            (dish_id,flavor_type,flavor_opt) values
-        <foreach collection="list" item="item" separator="," >
-            (#{item.dishId}, #{item.flavorId}, #{item.flavorOpt})
-        </foreach>
-    </insert>
-
     <update id="updateDish" parameterType="Dish">
         update biz_dish
         <trim prefix="SET" suffixOverrides=",">
@@ -110,18 +97,19 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </trim>
         where dish_id = #{dishId}
     </update>
+    <update id="updateDishSaleStatus" parameterType="com.ruoyi.biz.domain.Dish">
+        update biz_dish
+        set sale_status = #{saleStatus}
+        where dish_id = #{dishId}
+    </update>
 
-    <delete id="deleteDishByDishId" parameterType="Long">
-        delete from biz_dish where dish_id = #{dishId}
-    </delete>
-
-    <delete id="deleteDishByDishIds" parameterType="String">
-        delete from biz_dish where dish_id in 
+    <delete id="deleteDishByIds">
+        delete from biz_dish where dish_id in
         <foreach item="dishId" collection="array" open="(" separator="," close=")">
             #{dishId}
         </foreach>
     </delete>
-    <delete id="deleteDishFlavorByDishIds">
+    <delete id="deleteDishFlavorByIds">
         delete from biz_dish_flavor where dish_id in
         <foreach item="dishId" collection="array" open="(" separator="," close=")">
             #{dishId}

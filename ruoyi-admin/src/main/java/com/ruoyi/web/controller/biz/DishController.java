@@ -1,7 +1,6 @@
 package com.ruoyi.web.controller.biz;
 
 import com.ruoyi.biz.domain.Dish;
-import com.ruoyi.biz.domain.DishFlavor;
 import com.ruoyi.biz.dto.*;
 import com.ruoyi.biz.mapper.DishMapper;
 import com.ruoyi.common.annotation.Log;
@@ -55,8 +54,11 @@ public class DishController extends BaseController {
     @PostMapping("/dishes")
     @Transactional
     public AjaxResult addDish(@Valid @RequestBody AddDishParam param) {
+        // 获取用户所在店铺ID
+        Long storeId = SecurityUtils.getLoginUser().getUser().getStoreId();
         Dish dish = new Dish();
         BeanUtils.copyProperties(param, dish);
+        dish.setStoreId(storeId);
         dish.setCreateTime(DateUtils.getNowDate());
         dish.setCreateBy(SecurityUtils.getUsername());
         dishMapper.insertDish(dish);
@@ -64,7 +66,7 @@ public class DishController extends BaseController {
         List<DishFlavorDTO> flavors = param.getFlavors();
         if (flavors != null && flavors.size() > 0) {
             flavors.forEach(dishFlavor -> dishFlavor.setDishId(id));
-            dishMapper.insertDishFlavorBatch(flavors);
+            dishMapper.insertDishFlavor(flavors);
         }
         return AjaxResult.success();
     }
@@ -77,6 +79,11 @@ public class DishController extends BaseController {
         Dish dish = dishMapper.selectDishByDishId(id);
         if (dish == null) {
             return AjaxResult.error("菜品不存在");
+        }
+        // 只能修改本店铺的菜品信息
+        Long storeId = SecurityUtils.getLoginUser().getUser().getStoreId();
+        if (!storeId.equals(dish.getStoreId())) {
+            return AjaxResult.error("只能修改本店铺的菜品信息");
         }
         dish.setCategoryId(param.getCategoryId());
         dish.setDishName(param.getDishName());
@@ -94,8 +101,10 @@ public class DishController extends BaseController {
     @DeleteMapping("/dishes")
     @Transactional
     public AjaxResult remove(@RequestBody Long[] ids) {
-        dishMapper.deleteDishByDishIds(ids);
-        dishMapper.deleteDishFlavorByDishIds(ids);
+        // 只能删除本店铺的菜品信息
+        Long storeId = SecurityUtils.getLoginUser().getUser().getStoreId();
+        dishMapper.deleteDishByIds(ids, storeId);
+        dishMapper.deleteDishFlavorByIds(ids);
         return AjaxResult.success();
     }
 
@@ -108,13 +117,18 @@ public class DishController extends BaseController {
         if (dish == null) {
             return AjaxResult.error("菜品不存在");
         }
+        // 只能修改本店铺的售卖状态
+        Long storeId = SecurityUtils.getLoginUser().getUser().getStoreId();
+        if (!storeId.equals(dish.getStoreId())) {
+            return AjaxResult.error("只能修改本店铺的售卖状态");
+        }
         String currentStatus = dish.getSaleStatus();
         String newSaleStatus = "起售".equals(currentStatus) ? "停售" : "起售";
         String newSaleStatusValue = DictUtils.getDictValue("biz_dish_status", newSaleStatus);
         dish.setSaleStatus(newSaleStatusValue);
         dish.setUpdateTime(DateUtils.getNowDate());
         dish.setUpdateBy(SecurityUtils.getUsername());
-        dishMapper.updateDish(dish);
+        dishMapper.updateDishSaleStatus(dish);
         return AjaxResult.success();
     }
 }

@@ -52,12 +52,4 @@ public interface SetmealMapper
      * @return 结果
      */
     public int deleteSetmealBySetmealId(Long setmealId);
-
-    /**
-     * 批量删除套餐
-     * 
-     * @param setmealIds 需要删除的数据主键集合
-     * @return 结果
-     */
-    public int deleteSetmealBySetmealIds(Long[] setmealIds);
 }

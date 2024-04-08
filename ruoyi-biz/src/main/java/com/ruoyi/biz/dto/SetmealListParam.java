@@ -17,6 +17,9 @@ public class SetmealListParam {
     @ApiModelProperty("分类ID")
     private Long categoryId;
 
+    @ApiModelProperty(value = "店铺ID", hidden = true)
+    private Long storeId;
+
     @ApiModelProperty("页数")
     private Integer pageNum;
 

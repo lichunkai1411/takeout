@@ -2,7 +2,6 @@ package com.ruoyi.biz.mapper;
 
 import java.util.List;
 import com.ruoyi.biz.domain.Dish;
-import com.ruoyi.biz.domain.DishFlavor;
 import com.ruoyi.biz.dto.DishFlavorDTO;
 import com.ruoyi.biz.dto.DishListParam;
 import com.ruoyi.biz.dto.DishListVo;
@@ -47,27 +46,11 @@ public interface DishMapper
      */
     public int updateDish(Dish dish);
 
-    /**
-     * 删除菜品
-     * 
-     * @param dishId 菜品主键
-     * @return 结果
-     */
-    public int deleteDishByDishId(Long dishId);
+    void insertDishFlavor(List<DishFlavorDTO> flavors);
 
-    /**
-     * 批量删除菜品
-     * 
-     * @param dishIds 需要删除的数据主键集合
-     * @return 结果
-     */
-    public int deleteDishByDishIds(Long[] dishIds);
+    void deleteDishByIds(Long[] ids, Long storeId);
 
-    int selectDishByCategoryId(Long categoryId);
+    void deleteDishFlavorByIds(Long[] ids);
 
-    void insertDishFlavor(DishFlavor dishFlavor);
-
-    void deleteDishFlavorByDishIds(Long[] ids);
-
-    void insertDishFlavorBatch(List<DishFlavorDTO> flavors);
+    void updateDishSaleStatus(Dish dish);
 }

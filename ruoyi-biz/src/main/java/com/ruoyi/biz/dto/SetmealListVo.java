@@ -1,10 +1,12 @@
 package com.ruoyi.biz.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 @ApiModel("套餐列表-响应")
 @Data
@@ -29,10 +31,11 @@ public class SetmealListVo {
     private Long categoryId;
 
     @ApiModelProperty("创建时间")
-    private String createTime;
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private Date createTime;
 
-    @ApiModelProperty("更新时间")
-    private String updateTime;
+    @ApiModelProperty("创建人")
+    private String createBy;
 
 
 }

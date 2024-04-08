@@ -19,6 +19,9 @@ public class Setmeal extends BaseEntity
     /** 套餐ID */
     private Long setmealId;
 
+    /** 店铺ID */
+    private Long storeId;
+
     /** 套餐分类 */
     @Excel(name = "套餐分类")
     private Long categoryId;
@@ -52,6 +55,15 @@ public class Setmeal extends BaseEntity
     {
         return setmealId;
     }
+
+    public Long getStoreId() {
+        return storeId;
+    }
+
+    public void setStoreId(Long storeId) {
+        this.storeId = storeId;
+    }
+
     public void setCategoryId(Long categoryId) 
     {
         this.categoryId = categoryId;
@@ -111,6 +123,7 @@ public class Setmeal extends BaseEntity
     public String toString() {
         return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
             .append("setmealId", getSetmealId())
+            .append("storeId", getStoreId())
             .append("categoryId", getCategoryId())
             .append("setmealName", getSetmealName())
             .append("setmealPrice", getSetmealPrice())

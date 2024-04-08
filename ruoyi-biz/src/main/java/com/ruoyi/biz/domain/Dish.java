@@ -16,6 +16,8 @@ public class Dish extends BaseEntity
 {
     private static final long serialVersionUID = 1L;
 
+    /** 店铺ID */
+    private Long storeId;
 
     /** 菜品ID */
     private Long dishId;
@@ -44,66 +46,74 @@ public class Dish extends BaseEntity
     @Excel(name = "售卖状态")
     private String saleStatus;
 
-    public void setDishId(Long dishId) 
+    public Long getStoreId() {
+        return storeId;
+    }
+
+    public void setStoreId(Long storeId) {
+        this.storeId = storeId;
+    }
+
+    public void setDishId(Long dishId)
     {
         this.dishId = dishId;
     }
 
-    public Long getDishId() 
+    public Long getDishId()
     {
         return dishId;
     }
-    public void setCategoryId(Long categoryId) 
+    public void setCategoryId(Long categoryId)
     {
         this.categoryId = categoryId;
     }
 
-    public Long getCategoryId() 
+    public Long getCategoryId()
     {
         return categoryId;
     }
-    public void setDishName(String dishName) 
+    public void setDishName(String dishName)
     {
         this.dishName = dishName;
     }
 
-    public String getDishName() 
+    public String getDishName()
     {
         return dishName;
     }
-    public void setDishPrice(BigDecimal dishPrice) 
+    public void setDishPrice(BigDecimal dishPrice)
     {
         this.dishPrice = dishPrice;
     }
 
-    public BigDecimal getDishPrice() 
+    public BigDecimal getDishPrice()
     {
         return dishPrice;
     }
-    public void setDishImage(String dishImage) 
+    public void setDishImage(String dishImage)
     {
         this.dishImage = dishImage;
     }
 
-    public String getDishImage() 
+    public String getDishImage()
     {
         return dishImage;
     }
-    public void setDescription(String description) 
+    public void setDescription(String description)
     {
         this.description = description;
     }
 
-    public String getDescription() 
+    public String getDescription()
     {
         return description;
     }
-    public void setSaleStatus(String saleStatus) 
+    public void setSaleStatus(String saleStatus)
     {
         this.saleStatus = saleStatus;
     }
 
-    public String getSaleStatus() 
+    public String getSaleStatus()
     {
         return saleStatus;
     }
@@ -111,6 +121,7 @@ public class Dish extends BaseEntity
     @Override
     public String toString() {
         return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
+            .append("storeId", getStoreId())
             .append("dishId", getDishId())
             .append("categoryId", getCategoryId())
             .append("dishName", getDishName())
