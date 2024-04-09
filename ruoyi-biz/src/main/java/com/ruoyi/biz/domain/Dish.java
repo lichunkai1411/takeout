@@ -16,9 +16,6 @@ public class Dish extends BaseEntity
 {
     private static final long serialVersionUID = 1L;
 
-    /** 店铺ID */
-    private Long storeId;
-
     /** 菜品ID */
     private Long dishId;
 
@@ -45,14 +42,6 @@ public class Dish extends BaseEntity
     /** 售卖状态 */
     @Excel(name = "售卖状态")
     private String saleStatus;
-
-    public Long getStoreId() {
-        return storeId;
-    }
-
-    public void setStoreId(Long storeId) {
-        this.storeId = storeId;
-    }
 
     public void setDishId(Long dishId)
     {
@@ -121,7 +110,6 @@ public class Dish extends BaseEntity
     @Override
     public String toString() {
         return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
-            .append("storeId", getStoreId())
             .append("dishId", getDishId())
             .append("categoryId", getCategoryId())
             .append("dishName", getDishName())

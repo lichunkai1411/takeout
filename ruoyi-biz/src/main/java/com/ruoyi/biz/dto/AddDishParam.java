@@ -15,8 +15,8 @@ import java.util.List;
 @Data
 public class AddDishParam {
 
-    @NotNull(message = "分类ID不可为空")
-    @ApiModelProperty(value = "分类ID", required = true)
+    @NotNull(message = "分类分类不可为空")
+    @ApiModelProperty(value = "菜品分类ID", required = true)
     private Long categoryId;
 
     @NotEmpty(message = "菜品名称不可为空")
@@ -39,7 +39,7 @@ public class AddDishParam {
     private String description;
 
     @ApiModelProperty(value = "菜品口味")
-    private List<DishFlavorDTO> flavors = new ArrayList<>();
+    private List<DishFlavorDTO> dishFlavors;
 
 
 }

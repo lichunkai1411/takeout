@@ -11,10 +11,6 @@ import java.math.BigDecimal;
 @Data
 public class EditStoreInfoParam {
 
-    @NotEmpty(message = "店铺名称不可为空")
-    @ApiModelProperty(value = "店铺名称", required = true)
-    private String storeName;
-
     @NotNull(message = "打包费不可为空")
     @ApiModelProperty(value = "打包费", required = true)
     private BigDecimal packAmount;

@@ -62,11 +62,11 @@ public class StoreController extends BaseController {
         return AjaxResult.success();
     }
 
-    @PreAuthorize("@ss.hasPermi('biz:store:edit')")
+    @PreAuthorize("@ss.hasPermi('biz:store:editName')")
     @Log(title = "店铺管理", businessType = BusinessType.UPDATE,operatorType = MANAGE)
-    @ApiOperation("修改店铺")
-    @PutMapping("/stores/{id}")
-    public AjaxResult editStore(@PathVariable Long id, @Valid @RequestBody EditStoreParam param) {
+    @ApiOperation("修改店铺名称")
+    @PutMapping("/stores/{id}/name")
+    public AjaxResult editStore(@PathVariable Long id, @Valid @RequestBody EditStoreNameParam param) {
         Store store = storeMapper.selectStoreByStoreId(id);
         if (store == null) {
             return error("未找到店铺信息");
@@ -78,7 +78,7 @@ public class StoreController extends BaseController {
         return AjaxResult.success();
     }
 
-    @PreAuthorize("@ss.hasPermi('biz:store:edit')")
+    @PreAuthorize("@ss.hasPermi('biz:store:editDetail')")
     @Log(title = "店铺管理", businessType = BusinessType.UPDATE,operatorType = MANAGE)
     @ApiOperation("修改店铺详细信息")
     @PutMapping("/stores/{id}/detail")
@@ -87,7 +87,6 @@ public class StoreController extends BaseController {
         if (store == null) {
             return error("未找到店铺信息");
         }
-        store.setStoreName(param.getStoreName());
         store.setBusinessStatus(param.getBusinessStatus());
         store.setPackAmount(param.getPackAmount());
         store.setDeliveryAmount(param.getDeliveryAmount());

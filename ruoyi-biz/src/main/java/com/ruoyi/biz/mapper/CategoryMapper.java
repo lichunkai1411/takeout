@@ -62,4 +62,8 @@ public interface CategoryMapper
     public int deleteCategoryByCategoryIds(Long[] categoryIds);
 
     List<Category> selectCategoryByType(String categoryType);
+
+    int selectCountDishByCategoryId(Long id);
+
+    int selectCountSetMealByCategoryId(Long id);
 }

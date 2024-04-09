@@ -99,13 +99,22 @@ public class CategoryController extends BaseController {
         if (!Objects.equals(storeId,category.getStoreId())){
             return AjaxResult.error("只能删除本店铺的分类信息");
         }
+        // 判断当前分类下是否有菜品和套餐
+        int count = categoryMapper.selectCountDishByCategoryId(id);
+        if (count > 0) {
+            return AjaxResult.error("分类下有菜品，无法删除");
+        }
+        int count2 = categoryMapper.selectCountSetMealByCategoryId(id);
+        if (count2 > 0) {
+            return AjaxResult.error("分类下有套餐，无法删除");
+        }
         categoryMapper.deleteCategoryByCategoryId(id);
         return AjaxResult.success();
     }
 
-    @PreAuthorize("@ss.hasPermi('biz:category:edit')")
+    @PreAuthorize("@ss.hasPermi('biz:category:editStatus')")
     @Log(title = "分类管理", businessType = BusinessType.UPDATE, operatorType = MANAGE)
-    @ApiOperation("分类状态")
+    @ApiOperation("修改分类状态")
     @PutMapping("/categories/{id}/status")
     public AjaxResult changeStatus(@PathVariable Long id, @Valid @RequestBody EditCategoryStatusParam param) {
         Category category = categoryMapper.selectCategoryByCategoryId(id);
@@ -123,4 +132,5 @@ public class CategoryController extends BaseController {
         categoryMapper.updateCategory(category);
         return AjaxResult.success();
     }
+    // TODO 分类信息菜品或套餐  （类型）
 }

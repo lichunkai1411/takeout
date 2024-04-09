@@ -6,6 +6,7 @@ import lombok.Data;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
+import java.util.List;
 
 @ApiModel("修改菜品-请求")
 @Data
@@ -22,5 +23,7 @@ public class EditDishParam {
 
     @NotEmpty(message = "菜品图片不可为空")
     private String dishImage;
+
+    private List<AddDishParam> newFlavors;
 
 }

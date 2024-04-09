@@ -2,6 +2,7 @@ package com.ruoyi.biz.mapper;
 
 import java.util.List;
 import com.ruoyi.biz.domain.Setmeal;
+import com.ruoyi.biz.domain.SetmealDish;
 import com.ruoyi.biz.dto.SetmealListParam;
 import com.ruoyi.biz.dto.SetmealListVo;
 
@@ -52,4 +53,6 @@ public interface SetmealMapper
      * @return 结果
      */
     public int deleteSetmealBySetmealId(Long setmealId);
+
+    List<SetmealDish> selectSetmealByDishIds(Long[] ids);
 }

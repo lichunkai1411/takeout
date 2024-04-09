@@ -47,6 +47,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <include refid="selectCategoryVo"/>
         where category_type = #{categoryType}
     </select>
+    <select id="selectCountDishByCategoryId" resultType="java.lang.Integer">
+        select count(1) from biz_dish where category_id = #{categoryId}
+    </select>
+    <select id="selectCountSetMealByCategoryId" resultType="java.lang.Integer">
+        select count(1) from biz_setmeal where category_id = #{categoryId}
+    </select>
 
     <insert id="insertCategory" parameterType="com.ruoyi.biz.domain.Category">
         insert into biz_category

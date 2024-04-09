@@ -48,9 +48,11 @@ public interface DishMapper
 
     void insertDishFlavor(List<DishFlavorDTO> flavors);
 
-    void deleteDishByIds(Long[] ids, Long storeId);
+    void deleteDishByIds(Long[] ids);
 
     void deleteDishFlavorByIds(Long[] ids);
 
     void updateDishSaleStatus(Dish dish);
+
+    List<DishListVo> selectDishListByCategoryName(DishListParam param);
 }

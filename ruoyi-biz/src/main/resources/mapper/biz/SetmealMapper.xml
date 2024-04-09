@@ -37,7 +37,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             and sale_status = #{saleStatus}
             </if>
             <if test="categoryId != null">
-            and category_id = #{categoryId}
+            and c.category_id = #{categoryId}
             </if>
         </where>
         order by s.create_time desc
@@ -47,7 +47,20 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <include refid="selectSetmealVo"/>
         where setmeal_id = #{setmealId}
     </select>
-        
+    <select id="selectSetmealByDishIds" resultType="com.ruoyi.biz.domain.SetmealDish">
+        select
+            s.setmeal_id,
+            s.category_id,
+            d.dish_name,
+            d.dish_price,
+            d.dish_image
+            from biz_setmeal s
+            left join biz_dish d
+            on
+            s.category_id = d.category_id
+        where s.setmeal_id = #{setmealId}
+    </select>
+
     <insert id="insertSetmeal" parameterType="Setmeal" useGeneratedKeys="true" keyProperty="setmealId">
         insert into biz_setmeal
         <trim prefix="(" suffix=")" suffixOverrides=",">

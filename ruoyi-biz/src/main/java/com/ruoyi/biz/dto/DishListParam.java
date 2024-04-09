@@ -12,8 +12,8 @@ public class DishListParam {
     @ApiModelProperty("菜品名称")
     private String dishName;
 
-    @ApiModelProperty("菜品分类ID")
-    private String categoryId;
+    @ApiModelProperty("菜品分类")
+    private String categoryName;
 
     @ApiModelProperty("售卖状态")
     private String saleStatus;
