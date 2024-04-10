@@ -7,6 +7,7 @@ import lombok.Data;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
+import java.util.List;
 
 @ApiModel("添加套餐-请求")
 @Data
@@ -32,4 +33,9 @@ public class AddSetmealParam {
     @ApiModelProperty(value = "套餐分类ID", required = true)
     private Long categoryId;
 
+    @ApiModelProperty(value = "套餐描述")
+    private String description;
+
+    @ApiModelProperty(value = "套餐菜品关系")
+    private List<SetmealDishDTO> setmealDishes;
 }

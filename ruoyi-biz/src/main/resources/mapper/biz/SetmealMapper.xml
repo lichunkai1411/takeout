@@ -111,4 +111,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <delete id="deleteSetmealBySetmealId" parameterType="Long">
         delete from biz_setmeal where setmeal_id = #{setmealId}
     </delete>
+    <delete id="deleteSetmealByIds">
+        delete from biz_setmeal where setmeal_id in
+        <foreach collection="array" item="setmealId" open="(" separator="," close=")">
+            #{setmealId}
+        </foreach>
+    </delete>
 </mapper>

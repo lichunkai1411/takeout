@@ -58,4 +58,6 @@ public interface SetmealDishMapper
      * @return 结果
      */
     public int deleteSetmealDishBySetmealIds(Long[] setmealIds);
+
+    int selectSetMealDishByCategoryId(Long id);
 }

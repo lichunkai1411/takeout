@@ -105,4 +105,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             #{categoryId}
         </foreach>
     </delete>
+
+    <select id="getAll" resultType="com.ruoyi.biz.dto.CategoryAllVo">
+        select c.category_id,
+               c.category_name
+        from biz_category c
+        where c.store_id = #{storeId}
+          and c.category_type = #{param.categpryType}
+        <if test="param.categoryName != null and param.categoryName != ''">
+            and c.category_name like concat('%',#{param.categoryName},'%')
+        </if>
+        order by c.category_name
+    </select>
 </mapper>

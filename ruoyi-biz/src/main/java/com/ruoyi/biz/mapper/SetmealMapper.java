@@ -55,4 +55,6 @@ public interface SetmealMapper
     public int deleteSetmealBySetmealId(Long setmealId);
 
     List<SetmealDish> selectSetmealByDishIds(Long[] ids);
+
+    void deleteSetmealByIds(Long[] ids, Long storeId);
 }

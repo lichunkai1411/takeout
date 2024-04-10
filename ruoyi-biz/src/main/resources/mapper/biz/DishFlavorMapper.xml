@@ -50,7 +50,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </update>
 
     <delete id="deleteDishFlavorByDishId" parameterType="Long">
-        delete from biz_dish_flavor where dish_id = #{dishId}
+        delete
+        from biz_dish_flavor
+        where dish_id = #{dishId}
     </delete>
 
     <delete id="deleteDishFlavorByDishIds" parameterType="String">

@@ -59,6 +59,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </where>
         order by d.create_time desc
     </select>
+    <select id="selectDishByCategoryId" resultType="java.lang.Integer">
+        select count(1) from biz_dish where category_id = #{categoryId}
+    </select>
 
     <insert id="insertDish" parameterType="Dish" useGeneratedKeys="true" keyProperty="dishId">
         insert into biz_dish

@@ -13,7 +13,6 @@ import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.common.enums.BusinessType;
 import com.ruoyi.common.utils.DateUtils;
-import com.ruoyi.common.utils.DictUtils;
 import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.common.utils.bean.BeanUtils;
 import io.swagger.annotations.Api;
@@ -51,9 +50,11 @@ public class DishController extends BaseController {
     @ApiOperation("获取菜品列表")
     @GetMapping("/dishes")
     public TableDataInfo getList(DishListParam param) {
+        // 获取用户所在店铺ID
+        Long storeId = SecurityUtils.getLoginUser().getUser().getStoreId();
         startPage();
-        // 根据名称文字  dish左关联通过分类id
-        List<DishListVo> list = dishMapper.selectDishListByCategoryName(param);
+        // 查询条件中的菜品名称需要通过category_id关联biz_category表进行匹配
+        List<DishListVo> list = dishMapper.selectDishList(param, storeId);
         return getDataTable(list);
     }
 
@@ -82,18 +83,18 @@ public class DishController extends BaseController {
     @Log(title = "菜品管理", businessType = BusinessType.UPDATE, operatorType = MANAGE)
     @ApiOperation("修改菜品")
     @PutMapping("/dishes/{id}")
-    // TODO EditDishParam参数不全 更新时间
+    @Transactional
     public AjaxResult editDish(@PathVariable Long id, @Valid @RequestBody EditDishParam param) {
         Dish dish = dishMapper.selectDishByDishId(id);
         if (dish == null) {
             return AjaxResult.error("菜品不存在");
         }
-        // TODO 保存之前先删除原有口味  通过菜品id
         dishFlavorMapper.deleteDishFlavorByDishId(id);
         dish.setCategoryId(param.getCategoryId());
         dish.setDishName(param.getDishName());
         dish.setDishPrice(param.getDishPrice());
         dish.setDishImage(param.getDishImage());
+        dish.setDescription(param.getDescription());
         dish.setUpdateTime(DateUtils.getNowDate());
         dish.setUpdateBy(SecurityUtils.getUsername());
         dishMapper.updateDish(dish);
@@ -128,18 +129,15 @@ public class DishController extends BaseController {
     @Log(title = "菜品管理", businessType = BusinessType.UPDATE, operatorType = MANAGE)
     @ApiOperation("修改售卖状态")
     @PutMapping("/dishes/{id}/saleStatus")
-    public AjaxResult changeSaleStatus(@PathVariable Long id) {
+    public AjaxResult editSaleStatus(@PathVariable Long id, @RequestBody EditSaleStatusParam param) {
         Dish dish = dishMapper.selectDishByDishId(id);
         if (dish == null) {
             return AjaxResult.error("菜品不存在");
         }
-        String currentStatus = dish.getSaleStatus();
-        String newSaleStatus = "起售".equals(currentStatus) ? "停售" : "起售";
-        String newSaleStatusValue = DictUtils.getDictValue("biz_dish_status", newSaleStatus);
-        dish.setSaleStatus(newSaleStatusValue);
+        dish.setSaleStatus(param.getSaleStatus());
         dish.setUpdateTime(DateUtils.getNowDate());
         dish.setUpdateBy(SecurityUtils.getUsername());
-        dishMapper.updateDishSaleStatus(dish);
+        dishMapper.updateDish(dish);
         return AjaxResult.success();
     }
 }

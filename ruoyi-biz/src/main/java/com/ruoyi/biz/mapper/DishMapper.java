@@ -5,6 +5,7 @@ import com.ruoyi.biz.domain.Dish;
 import com.ruoyi.biz.dto.DishFlavorDTO;
 import com.ruoyi.biz.dto.DishListParam;
 import com.ruoyi.biz.dto.DishListVo;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * 菜品Mapper接口
@@ -28,7 +29,7 @@ public interface DishMapper
      * @param param 菜品
      * @return 菜品集合
      */
-    public List<DishListVo> selectDishList(DishListParam param);
+    public List<DishListVo> selectDishList(@Param("param") DishListParam param, @Param("storeId") Long storeId);
 
     /**
      * 新增菜品
@@ -55,4 +56,6 @@ public interface DishMapper
     void updateDishSaleStatus(Dish dish);
 
     List<DishListVo> selectDishListByCategoryName(DishListParam param);
+
+    int selectDishByCategoryId(Long id);
 }

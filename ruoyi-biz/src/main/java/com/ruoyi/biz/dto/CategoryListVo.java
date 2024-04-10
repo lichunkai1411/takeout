@@ -11,19 +11,19 @@ import java.util.Date;
 @Data
 public class CategoryListVo {
     @ApiModelProperty("分类ID")
-    private Long CategoryId;
+    private Long categoryId;
 
     @ApiModelProperty("分类类型")
-    private String CategoryType;
+    private String categoryType;
 
     @ApiModelProperty("分类名称")
-    private String CategoryName;
+    private String categoryName;
 
     @ApiModelProperty("分类状态")
-    private String CategoryStatus;
+    private String categoryStatus;
 
     @ApiModelProperty("分类排序")
-    private Integer CategorySort;
+    private Integer categorySort;
 
     @ApiModelProperty("创建时间")
     @JsonFormat(pattern = "yyyy-MM-dd")

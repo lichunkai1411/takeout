@@ -3,6 +3,8 @@ package com.ruoyi.web.controller.biz;
 import com.ruoyi.biz.domain.Category;
 import com.ruoyi.biz.dto.*;
 import com.ruoyi.biz.mapper.CategoryMapper;
+import com.ruoyi.biz.mapper.DishMapper;
+import com.ruoyi.biz.mapper.SetmealDishMapper;
 import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
@@ -12,7 +14,9 @@ import com.ruoyi.common.utils.DateUtils;
 import com.ruoyi.common.utils.SecurityUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.List;
@@ -26,9 +30,13 @@ import static com.ruoyi.common.enums.OperatorType.MANAGE;
 public class CategoryController extends BaseController {
 
     private final CategoryMapper categoryMapper;
+    private DishMapper dishMapper;
+    private SetmealDishMapper setmealDishMapper;
 
-    public CategoryController(CategoryMapper categoryMapper) {
+    public CategoryController(CategoryMapper categoryMapper, DishMapper dishMapper, SetmealDishMapper setmealDishMapper) {
         this.categoryMapper = categoryMapper;
+        this.dishMapper = dishMapper;
+        this.setmealDishMapper = setmealDishMapper;
     }
 
     @PreAuthorize("@ss.hasPermi('biz:category:list')")
@@ -99,14 +107,11 @@ public class CategoryController extends BaseController {
         if (!Objects.equals(storeId,category.getStoreId())){
             return AjaxResult.error("只能删除本店铺的分类信息");
         }
-        // 判断当前分类下是否有菜品和套餐
-        int count = categoryMapper.selectCountDishByCategoryId(id);
-        if (count > 0) {
-            return AjaxResult.error("分类下有菜品，无法删除");
-        }
-        int count2 = categoryMapper.selectCountSetMealByCategoryId(id);
-        if (count2 > 0) {
-            return AjaxResult.error("分类下有套餐，无法删除");
+        // 判断当前分类下是否有菜品或套餐
+        boolean hasDish = dishMapper.selectDishByCategoryId(id) > 0;
+        boolean hasSetMealDish = setmealDishMapper.selectSetMealDishByCategoryId(id) > 0;
+        if (hasDish || hasSetMealDish) {
+            return AjaxResult.error("当前分类下有菜品或套餐，不可删除");
         }
         categoryMapper.deleteCategoryByCategoryId(id);
         return AjaxResult.success();
@@ -132,5 +137,14 @@ public class CategoryController extends BaseController {
         categoryMapper.updateCategory(category);
         return AjaxResult.success();
     }
-    // TODO 分类信息菜品或套餐  （类型）
+
+    @PreAuthorize("@ss.hasPermi('biz:category:all')")
+    @ApiOperation("获取所有分类")
+    @GetMapping("/categories/all")
+    public AjaxResult getAll(@Valid CategoryAllParam param) {
+        // 获取用户所在店铺ID
+        Long storeId = SecurityUtils.getLoginUser().getUser().getStoreId();
+        List<CategoryAllVo> list = categoryMapper.getAll(param,storeId);
+        return AjaxResult.success(list);
+    }
 }

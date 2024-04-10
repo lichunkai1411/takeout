@@ -14,8 +14,8 @@ public class DishListVo {
     @ApiModelProperty("菜品名称")
     private String dishName;
 
-    @ApiModelProperty("分类ID")
-    private String categoryId;
+    @ApiModelProperty("分类名称")
+    private String categoryName;
 
     @ApiModelProperty("售卖状态")
     private String saleStatus;

@@ -25,7 +25,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <include refid="selectSetmealDishVo"/>
         where setmeal_id = #{setmealId}
     </select>
-        
+    <select id="selectSetMealDishByCategoryId" resultType="java.lang.Integer">
+        select count(1) from biz_setmeal_dish where dish_id = #{dishId}
+    </select>
+
     <insert id="insertSetmealDish" parameterType="SetmealDish">
         insert into biz_setmeal_dish
         <trim prefix="(" suffix=")" suffixOverrides=",">
