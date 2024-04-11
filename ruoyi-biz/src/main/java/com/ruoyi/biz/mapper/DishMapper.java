@@ -3,6 +3,7 @@ package com.ruoyi.biz.mapper;
 import java.util.List;
 import com.ruoyi.biz.domain.Dish;
 import com.ruoyi.biz.dto.DishFlavorDTO;
+import com.ruoyi.biz.dto.DishInfoVo;
 import com.ruoyi.biz.dto.DishListParam;
 import com.ruoyi.biz.dto.DishListVo;
 import org.apache.ibatis.annotations.Param;
@@ -51,11 +52,7 @@ public interface DishMapper
 
     void deleteDishByIds(Long[] ids);
 
-    void deleteDishFlavorByIds(Long[] ids);
+    List<DishInfoVo> selectDishInfoByCategoryId(Long id);
 
-    void updateDishSaleStatus(Dish dish);
-
-    List<DishListVo> selectDishListByCategoryName(DishListParam param);
-
-    int selectDishByCategoryId(Long id);
+    void deleteDishByDishId(Long id);
 }

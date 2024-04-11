@@ -56,19 +56,5 @@ public interface CategoryMapper {
      */
     public int deleteCategoryByCategoryId(Long categoryId);
 
-    /**
-     * 批量删除分类
-     *
-     * @param categoryIds 需要删除的数据主键集合
-     * @return 结果
-     */
-    public int deleteCategoryByCategoryIds(Long[] categoryIds);
-
-    List<Category> selectCategoryByType(String categoryType);
-
-    int selectCountDishByCategoryId(Long id);
-
-    int selectCountSetMealByCategoryId(Long id);
-
     List<CategoryAllVo> getAll(@Param("param") CategoryAllParam param, @Param("storeId") Long storeId);
 }

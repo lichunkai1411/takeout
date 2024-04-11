@@ -38,29 +38,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <include refid="selectDishVo"/>
         where dish_id = #{dishId}
     </select>
-    <select id="selectDishListByCategoryName" resultType="com.ruoyi.biz.dto.DishListVo">
-        select
-            d.*,
-            c.category_name categoryName
+
+    <select id="selectDishInfoByCategoryId" resultType="com.ruoyi.biz.dto.DishInfoVo">
+        select d.dish_id,
+               d.dish_name,
+               d.dish_price,
+               d.dish_image
             from biz_dish d
-            left join biz_category c
-            on
-            d.category_id = c.category_id
-        <where>
-            <if test="categoryName != null and categoryName != ''">
-                and c.category_name = #{categoryName}
-            </if>
-            <if test="dishName != null and dishName != ''">
-                and d.dish_name like concat('%', #{dishName}, '%')
-            </if>
-            <if test="saleStatus != null and saleStatus != ''">
-                and d.sale_status = #{saleStatus}
-            </if>
-        </where>
-        order by d.create_time desc
-    </select>
-    <select id="selectDishByCategoryId" resultType="java.lang.Integer">
-        select count(1) from biz_dish where category_id = #{categoryId}
+        where category_id = #{categoryId}
     </select>
 
     <insert id="insertDish" parameterType="Dish" useGeneratedKeys="true" keyProperty="dishId">
@@ -121,11 +106,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </trim>
         where dish_id = #{dishId}
     </update>
-    <update id="updateDishSaleStatus" parameterType="com.ruoyi.biz.domain.Dish">
-        update biz_dish
-        set sale_status = #{saleStatus}
-        where dish_id = #{dishId}
-    </update>
 
     <delete id="deleteDishByIds">
         delete from biz_dish where dish_id in
@@ -133,10 +113,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             #{dishId}
         </foreach>
     </delete>
-    <delete id="deleteDishFlavorByIds">
-        delete from biz_dish_flavor where dish_id in
-        <foreach item="dishId" collection="array" open="(" separator="," close=")">
-            #{dishId}
-        </foreach>
+    <delete id="deleteDishByDishId">
+        delete from biz_dish where dish_id = #{dishId}
     </delete>
 </mapper>

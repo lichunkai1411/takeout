@@ -6,7 +6,7 @@ import lombok.Data;
 
 import javax.validation.constraints.NotEmpty;
 
-@ApiModel("修改售卖状态参数")
+@ApiModel("修改菜品售卖状态参数-请求")
 @Data
 public class EditSaleStatusParam {
 

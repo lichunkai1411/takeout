@@ -3,8 +3,10 @@ package com.ruoyi.biz.mapper;
 import java.util.List;
 import com.ruoyi.biz.domain.Setmeal;
 import com.ruoyi.biz.domain.SetmealDish;
+import com.ruoyi.biz.dto.SetmealInfo;
 import com.ruoyi.biz.dto.SetmealListParam;
 import com.ruoyi.biz.dto.SetmealListVo;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * 套餐Mapper接口
@@ -28,7 +30,7 @@ public interface SetmealMapper
      * @param param 套餐
      * @return 套餐集合
      */
-    public List<SetmealListVo> selectSetmealList(SetmealListParam param);
+    public List<SetmealListVo> selectSetmealList(@Param("param") SetmealListParam param, @Param("storeId") Long storeId);
 
     /**
      * 新增套餐
@@ -46,15 +48,14 @@ public interface SetmealMapper
      */
     public int updateSetmeal(Setmeal setmeal);
 
-    /**
-     * 删除套餐
-     * 
-     * @param setmealId 套餐主键
-     * @return 结果
-     */
-    public int deleteSetmealBySetmealId(Long setmealId);
 
     List<SetmealDish> selectSetmealByDishIds(Long[] ids);
 
-    void deleteSetmealByIds(Long[] ids, Long storeId);
+    void deleteSetmealById(Long id);
+
+    List<SetmealInfo> selectSetmealInfoByCategoryId(Long id);
+
+    List<SetmealDish> selectSetmealDishInfoByDishId(Long id);
+
+    void deleteSetmealDishBySetmealId(Long id);
 }

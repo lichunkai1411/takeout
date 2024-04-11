@@ -17,6 +17,10 @@ public class AddSetmealParam {
     @ApiModelProperty(value = "套餐名称", required = true)
     private String setmealName;
 
+    @NotNull(message = "套餐分类ID不可为空")
+    @ApiModelProperty(value = "套餐分类ID", required = true)
+    private Long categoryId;
+
     @NotNull(message = "套餐价格不可为空")
     @ApiModelProperty(value = "套餐价格", required = true)
     private BigDecimal setmealPrice;
@@ -28,10 +32,6 @@ public class AddSetmealParam {
     @NotEmpty(message = "售卖状态不可为空")
     @ApiModelProperty(value = "售卖状态", required = true)
     private String saleStatus;
-
-    @NotNull(message = "套餐分类ID不可为空")
-    @ApiModelProperty(value = "套餐分类ID", required = true)
-    private Long categoryId;
 
     @ApiModelProperty(value = "套餐描述")
     private String description;

@@ -38,21 +38,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             and category_type = #{categoryType}
             </if>
     </select>
-    
-    <select id="selectCategoryByCategoryId" parameterType="Long" resultMap="CategoryResult">
-        <include refid="selectCategoryVo"/>
-        where category_id = #{categoryId}
-    </select>
-    <select id="selectCategoryByType" resultType="com.ruoyi.biz.domain.Category">
-        <include refid="selectCategoryVo"/>
-        where category_type = #{categoryType}
-    </select>
-    <select id="selectCountDishByCategoryId" resultType="java.lang.Integer">
-        select count(1) from biz_dish where category_id = #{categoryId}
-    </select>
-    <select id="selectCountSetMealByCategoryId" resultType="java.lang.Integer">
-        select count(1) from biz_setmeal where category_id = #{categoryId}
-    </select>
 
     <insert id="insertCategory" parameterType="com.ruoyi.biz.domain.Category">
         insert into biz_category
@@ -99,13 +84,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         delete from biz_category where category_id = #{categoryId}
     </delete>
 
-    <delete id="deleteCategoryByCategoryIds" parameterType="String">
-        delete from biz_category where category_id in 
-        <foreach item="categoryId" collection="array" open="(" separator="," close=")">
-            #{categoryId}
-        </foreach>
-    </delete>
-
     <select id="getAll" resultType="com.ruoyi.biz.dto.CategoryAllVo">
         select c.category_id,
                c.category_name
@@ -116,5 +94,18 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             and c.category_name like concat('%',#{param.categoryName},'%')
         </if>
         order by c.category_name
+    </select>
+    <select id="selectCategoryByCategoryId" resultType="com.ruoyi.biz.domain.Category">
+        select category_id,
+               category_name,
+               category_type,
+               category_status,
+               category_sort,
+               create_time,
+               create_by,
+               update_time,
+               update_by
+        from biz_category
+        where category_id = #{categoryId}
     </select>
 </mapper>

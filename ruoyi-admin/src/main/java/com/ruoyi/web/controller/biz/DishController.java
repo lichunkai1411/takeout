@@ -2,7 +2,6 @@ package com.ruoyi.web.controller.biz;
 
 import com.ruoyi.biz.domain.Dish;
 import com.ruoyi.biz.domain.DishFlavor;
-import com.ruoyi.biz.domain.SetmealDish;
 import com.ruoyi.biz.dto.*;
 import com.ruoyi.biz.mapper.DishFlavorMapper;
 import com.ruoyi.biz.mapper.DishMapper;
@@ -20,8 +19,10 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+
 import javax.validation.Valid;
 import java.util.List;
+
 import static com.ruoyi.common.enums.OperatorType.MANAGE;
 
 @Api("菜品管理")
@@ -53,7 +54,6 @@ public class DishController extends BaseController {
         // 获取用户所在店铺ID
         Long storeId = SecurityUtils.getLoginUser().getUser().getStoreId();
         startPage();
-        // 查询条件中的菜品名称需要通过category_id关联biz_category表进行匹配
         List<DishListVo> list = dishMapper.selectDishList(param, storeId);
         return getDataTable(list);
     }
@@ -65,6 +65,9 @@ public class DishController extends BaseController {
     @Transactional
     public AjaxResult addDish(@Valid @RequestBody AddDishParam param) {
         Dish dish = new Dish();
+        // 获取用户所在店铺ID
+        Long storeId = SecurityUtils.getLoginUser().getUser().getStoreId();
+        dish.setStoreId(storeId);
         BeanUtils.copyProperties(param, dish);
         dish.setSaleStatus("biz_sale_status_disable");
         dish.setCreateTime(DateUtils.getNowDate());
@@ -89,12 +92,12 @@ public class DishController extends BaseController {
         if (dish == null) {
             return AjaxResult.error("菜品不存在");
         }
+        // 只能修改本店铺下的菜品信息
+        if (!dish.getStoreId().equals(SecurityUtils.getLoginUser().getUser().getStoreId())) {
+            return AjaxResult.error("只能修改本店铺的菜品信息");
+        }
         dishFlavorMapper.deleteDishFlavorByDishId(id);
-        dish.setCategoryId(param.getCategoryId());
-        dish.setDishName(param.getDishName());
-        dish.setDishPrice(param.getDishPrice());
-        dish.setDishImage(param.getDishImage());
-        dish.setDescription(param.getDescription());
+        BeanUtils.copyProperties(param, dish);
         dish.setUpdateTime(DateUtils.getNowDate());
         dish.setUpdateBy(SecurityUtils.getUsername());
         dishMapper.updateDish(dish);
@@ -107,22 +110,24 @@ public class DishController extends BaseController {
     @DeleteMapping("/dishes")
     @Transactional
     public AjaxResult remove(@RequestBody DishIdsParam param) {
-        // TODO 只能删除本店铺的菜品信息
-        // TODO 起售状态不可删除  套餐关联的不可删除
         for (Long id : param.getIds()) {
             Dish dish = dishMapper.selectDishByDishId(id);
-            if (dish.getSaleStatus().equals("biz_sale_status_enable")) {
-                return AjaxResult.error("起售状态不可删除");
+            if (dish == null) {
+                return AjaxResult.error("菜品不存在");
             }
+            if (!dish.getStoreId().equals(SecurityUtils.getLoginUser().getUser().getStoreId())) {
+                return AjaxResult.error("只能删除本店铺的菜品");
+            }
+            if ("biz_sale_status_enable".equals(dish.getSaleStatus())) {
+                return AjaxResult.error("当前菜品为起售状态，无法删除");
+            }
+            if (!setmealMapper.selectSetmealDishInfoByDishId(id).isEmpty()) {
+                return AjaxResult.error("当前菜品已被套餐引用，无法删除");
+            }
+            dishFlavorMapper.deleteDishFlavorByDishId(id);
+            dishMapper.deleteDishByDishId(id);
         }
-        List<SetmealDish> setmealDishes = setmealMapper.selectSetmealByDishIds(param.getIds());
-        if (setmealDishes.size() > 0) {
-            return AjaxResult.error("套餐关联的菜品不可删除");
-        }
-        dishMapper.deleteDishByIds(param.getIds());
-        dishMapper.deleteDishFlavorByIds(param.getIds());
         return AjaxResult.success();
-
     }
 
     @PreAuthorize("@ss.hasPermi('biz:dish:editSaleStatus')")
@@ -133,6 +138,10 @@ public class DishController extends BaseController {
         Dish dish = dishMapper.selectDishByDishId(id);
         if (dish == null) {
             return AjaxResult.error("菜品不存在");
+        }
+        // 只能修改本店铺下的菜品信息
+        if (!dish.getStoreId().equals(SecurityUtils.getLoginUser().getUser().getStoreId())) {
+            return AjaxResult.error("只能修改本店铺的菜品信息");
         }
         dish.setSaleStatus(param.getSaleStatus());
         dish.setUpdateTime(DateUtils.getNowDate());

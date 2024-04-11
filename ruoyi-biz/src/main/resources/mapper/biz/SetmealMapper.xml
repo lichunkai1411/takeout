@@ -108,13 +108,35 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         where setmeal_id = #{setmealId}
     </update>
 
-    <delete id="deleteSetmealBySetmealId" parameterType="Long">
-        delete from biz_setmeal where setmeal_id = #{setmealId}
-    </delete>
-    <delete id="deleteSetmealByIds">
+    <delete id="deleteSetmealById">
         delete from biz_setmeal where setmeal_id in
         <foreach collection="array" item="setmealId" open="(" separator="," close=")">
             #{setmealId}
         </foreach>
     </delete>
+    <delete id="deleteSetmealDishBySetmealId">
+        delete from biz_setmeal where setmeal_id = #{setmealId}
+    </delete>
+
+    <select id="selectSetmealInfoByCategoryId" resultType="com.ruoyi.biz.dto.SetmealInfo">
+        select s.setmeal_id,
+               s.setmeal_name,
+               s.setmeal_price,
+               s.setmeal_image
+        from biz_setmeal s
+        where category_id = #{categoryId}
+    </select>
+    <select id="selectSetmealDishInfoByDishId" resultType="com.ruoyi.biz.domain.SetmealDish">
+        select
+            s.setmeal_id,
+            s.category_id,
+            d.dish_name,
+            d.dish_price,
+            d.dish_image
+            from biz_setmeal s
+            left join biz_dish d
+            on
+            s.category_id = d.category_id
+        where d.dish_id = #{dishId}
+    </select>
 </mapper>

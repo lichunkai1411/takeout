@@ -4,7 +4,7 @@ import com.ruoyi.biz.domain.Category;
 import com.ruoyi.biz.dto.*;
 import com.ruoyi.biz.mapper.CategoryMapper;
 import com.ruoyi.biz.mapper.DishMapper;
-import com.ruoyi.biz.mapper.SetmealDishMapper;
+import com.ruoyi.biz.mapper.SetmealMapper;
 import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
@@ -14,10 +14,9 @@ import com.ruoyi.common.utils.DateUtils;
 import com.ruoyi.common.utils.SecurityUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Objects;
@@ -30,13 +29,13 @@ import static com.ruoyi.common.enums.OperatorType.MANAGE;
 public class CategoryController extends BaseController {
 
     private final CategoryMapper categoryMapper;
-    private DishMapper dishMapper;
-    private SetmealDishMapper setmealDishMapper;
+    private final DishMapper dishMapper;
+    private final SetmealMapper setmealMapper;
 
-    public CategoryController(CategoryMapper categoryMapper, DishMapper dishMapper, SetmealDishMapper setmealDishMapper) {
+    public CategoryController(CategoryMapper categoryMapper, DishMapper dishMapper, SetmealMapper setmealMapper) {
         this.categoryMapper = categoryMapper;
         this.dishMapper = dishMapper;
-        this.setmealDishMapper = setmealDishMapper;
+        this.setmealMapper = setmealMapper;
     }
 
     @PreAuthorize("@ss.hasPermi('biz:category:list')")
@@ -81,7 +80,7 @@ public class CategoryController extends BaseController {
         }
         // 获取用户所在店铺ID
         Long storeId = SecurityUtils.getLoginUser().getUser().getStoreId();
-        if (!Objects.equals(storeId,category.getCategoryId())){
+        if (!Objects.equals(storeId, category.getCategoryId())) {
             return AjaxResult.error("只能修改本店铺的分类信息");
         }
         category.setCategoryName(param.getCategoryName());
@@ -104,14 +103,19 @@ public class CategoryController extends BaseController {
         }
         // 获取用户所在店铺ID
         Long storeId = SecurityUtils.getLoginUser().getUser().getStoreId();
-        if (!Objects.equals(storeId,category.getStoreId())){
+        if (!Objects.equals(storeId, category.getStoreId())) {
             return AjaxResult.error("只能删除本店铺的分类信息");
         }
         // 判断当前分类下是否有菜品或套餐
-        boolean hasDish = dishMapper.selectDishByCategoryId(id) > 0;
-        boolean hasSetMealDish = setmealDishMapper.selectSetMealDishByCategoryId(id) > 0;
-        if (hasDish || hasSetMealDish) {
-            return AjaxResult.error("当前分类下有菜品或套餐，不可删除");
+        if ("biz_category_type_dish".equals(category.getCategoryType())) {
+            if (!dishMapper.selectDishInfoByCategoryId(id).isEmpty()) {
+                return AjaxResult.error("当前分类下有菜品，无法删除");
+            }
+        }
+        if ("biz_category_type_setmeal".equals(category.getCategoryType())) {
+            if (!setmealMapper.selectSetmealInfoByCategoryId(id).isEmpty()) {
+                return AjaxResult.error("当前分类下有套餐，无法删除");
+            }
         }
         categoryMapper.deleteCategoryByCategoryId(id);
         return AjaxResult.success();
@@ -128,7 +132,7 @@ public class CategoryController extends BaseController {
         }
         // 获取用户所在店铺ID
         Long storeId = SecurityUtils.getLoginUser().getUser().getStoreId();
-        if (!Objects.equals(storeId,category.getStoreId())){
+        if (!Objects.equals(storeId, category.getStoreId())) {
             return AjaxResult.error("只能修改本店铺的分类信息");
         }
         category.setCategoryStatus(param.getCategoryStatus());
@@ -144,7 +148,7 @@ public class CategoryController extends BaseController {
     public AjaxResult getAll(@Valid CategoryAllParam param) {
         // 获取用户所在店铺ID
         Long storeId = SecurityUtils.getLoginUser().getUser().getStoreId();
-        List<CategoryAllVo> list = categoryMapper.getAll(param,storeId);
+        List<CategoryAllVo> list = categoryMapper.getAll(param, storeId);
         return AjaxResult.success(list);
     }
 }

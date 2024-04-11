@@ -7,7 +7,7 @@ import lombok.Data;
 import javax.validation.constraints.NotEmpty;
 
 @Data
-@ApiModel("修改套餐状态-请求")
+@ApiModel("修改套餐售卖状态参数-请求")
 public class EditSetmealStatusParam {
 
     @NotEmpty(message = "套餐状态不可为空")
