@@ -9,7 +9,6 @@ import java.math.BigDecimal;
  * 套餐对象 biz_setmeal
  */
 @Data
-@ToString
 @Builder
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor

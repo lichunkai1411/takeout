@@ -1,24 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper
-PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ruoyi.biz.mapper.StoreMapper">
-    
-    <resultMap type="com.ruoyi.biz.domain.Store" id="StoreResult">
-        <result property="storeId"    column="store_id"    />
-        <result property="storeName"    column="store_name"    />
-        <result property="businessStatus"    column="business_status"    />
-        <result property="packAmount"    column="pack_amount"    />
-        <result property="deliveryAmount"    column="delivery_amount"    />
-        <result property="createTime"    column="create_time"    />
-        <result property="createBy"    column="create_by"    />
-        <result property="updateTime"    column="update_time"    />
-        <result property="updateBy"    column="update_by"    />
-    </resultMap>
 
-    <sql id="selectStoreVo">
-        select store_id, store_name, business_status, pack_amount, delivery_amount, create_time, create_by, update_time, update_by from biz_store
-    </sql>
+    <select id="selectStoreByStoreId" resultType="com.ruoyi.biz.domain.Store">
+        select *
+        from biz_store
+        where store_id = #{storeId}
+    </select>
 
     <select id="selectStoreList" resultType="com.ruoyi.biz.dto.StoreListVo">
         select store_id,
@@ -44,13 +34,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             </if>
         </where>
     </select>
-    
-    <select id="selectStoreByStoreId"  resultMap="StoreResult">
-        <include refid="selectStoreVo"/>
-        where store_id = #{storeId}
-    </select>
-        
-    <insert id="insertStore" parameterType="com.ruoyi.biz.domain.Store" >
+
+    <insert id="insertStore">
         insert into biz_store
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="storeName != null and storeName != ''">store_name,</if>
@@ -61,7 +46,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="createBy != null">create_by,</if>
             <if test="updateTime != null">update_time,</if>
             <if test="updateBy != null">update_by,</if>
-         </trim>
+        </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="storeName != null and storeName != ''">#{storeName},</if>
             <if test="businessStatus != null and businessStatus != ''">#{businessStatus},</if>
@@ -71,10 +56,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="createBy != null">#{createBy},</if>
             <if test="updateTime != null">#{updateTime},</if>
             <if test="updateBy != null">#{updateBy},</if>
-         </trim>
+        </trim>
     </insert>
 
-    <update id="updateStore" parameterType="com.ruoyi.biz.domain.Store">
+    <update id="updateStore">
         update biz_store
         <trim prefix="SET" suffixOverrides=",">
             <if test="storeName != null and storeName != ''">store_name = #{storeName},</if>

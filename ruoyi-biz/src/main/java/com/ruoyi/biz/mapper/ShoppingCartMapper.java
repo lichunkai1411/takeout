@@ -5,57 +5,36 @@ import com.ruoyi.biz.domain.ShoppingCart;
 
 /**
  * 购物车Mapper接口
- * 
- * @author ruoyi
- * @date 2024-04-01
  */
 public interface ShoppingCartMapper 
 {
     /**
-     * 查询购物车
-     * 
-     * @param shopId 购物车主键
-     * @return 购物车
+     * 通过购物车ID查询购物车
      */
-    public ShoppingCart selectShoppingCartByShopId(Long shopId);
+    ShoppingCart selectShoppingCartByShopId(Long shopId);
 
     /**
      * 查询购物车列表
-     * 
-     * @param shoppingCart 购物车
-     * @return 购物车集合
      */
-    public List<ShoppingCart> selectShoppingCartList(ShoppingCart shoppingCart);
+    List<ShoppingCart> selectShoppingCartList(ShoppingCart shoppingCart);
 
     /**
      * 新增购物车
-     * 
-     * @param shoppingCart 购物车
-     * @return 结果
      */
-    public int insertShoppingCart(ShoppingCart shoppingCart);
+    int insertShoppingCart(ShoppingCart shoppingCart);
 
     /**
      * 修改购物车
-     * 
-     * @param shoppingCart 购物车
-     * @return 结果
      */
-    public int updateShoppingCart(ShoppingCart shoppingCart);
+    int updateShoppingCart(ShoppingCart shoppingCart);
 
     /**
-     * 删除购物车
-     * 
-     * @param shopId 购物车主键
-     * @return 结果
+     * 通过购物车ID删除购物车
      */
-    public int deleteShoppingCartByShopId(Long shopId);
+    int deleteShoppingCartByShopId(Long shopId);
 
     /**
-     * 批量删除购物车
-     * 
-     * @param shopIds 需要删除的数据主键集合
-     * @return 结果
+     * 通过购物车ID批量删除购物车
      */
-    public int deleteShoppingCartByShopIds(Long[] shopIds);
+    int deleteShoppingCartByShopIds(Long[] shopIds);
 }

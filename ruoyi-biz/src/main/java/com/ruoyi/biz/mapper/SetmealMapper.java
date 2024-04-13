@@ -10,52 +10,46 @@ import org.apache.ibatis.annotations.Param;
 
 /**
  * 套餐Mapper接口
- * 
- * @author ruoyi
- * @date 2024-04-01
  */
 public interface SetmealMapper 
 {
     /**
-     * 查询套餐
-     * 
-     * @param setmealId 套餐主键
-     * @return 套餐
+     * 通过套餐ID查询套餐
      */
-    public Setmeal selectSetmealBySetmealId(Long setmealId);
+    Setmeal selectSetmealBySetmealId(Long setmealId);
 
     /**
      * 查询套餐列表
-     *
-     * @param param 套餐
-     * @return 套餐集合
      */
-    public List<SetmealListVo> selectSetmealList(@Param("param") SetmealListParam param, @Param("storeId") Long storeId);
+    List<SetmealListVo> selectSetmealList(@Param("param") SetmealListParam param, @Param("storeId") Long storeId);
 
     /**
      * 新增套餐
-     * 
-     * @param setmeal 套餐
-     * @return 结果
      */
-    public int insertSetmeal(Setmeal setmeal);
+    int insertSetmeal(Setmeal setmeal);
 
     /**
      * 修改套餐
-     * 
-     * @param setmeal 套餐
-     * @return 结果
      */
-    public int updateSetmeal(Setmeal setmeal);
+    int updateSetmeal(Setmeal setmeal);
 
-
-    List<SetmealDish> selectSetmealByDishIds(Long[] ids);
-
+    /**
+     * 通过套餐ID删除套餐
+     */
     void deleteSetmealById(Long id);
 
+    /**
+     * 通过分类ID查询套餐详情
+     */
     List<SetmealInfo> selectSetmealInfoByCategoryId(Long id);
 
+    /**
+     * 通过分类ID查询套餐详情
+     */
     List<SetmealDish> selectSetmealDishInfoByDishId(Long id);
 
+    /**
+     * 通过套餐ID删除套餐菜品
+     */
     void deleteSetmealDishBySetmealId(Long id);
 }

@@ -7,11 +7,8 @@ import lombok.*;
  * 分类对象 biz_category
  */
 @Data
-@ToString
 @Builder
 @EqualsAndHashCode(callSuper = true)
-@NoArgsConstructor
-@AllArgsConstructor
 public class Category extends BaseEntity {
     private static final long serialVersionUID = 1L;
 

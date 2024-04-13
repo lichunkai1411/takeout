@@ -14,6 +14,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
 import javax.validation.Valid;
 import java.util.List;
 
@@ -47,15 +48,16 @@ public class StoreController extends BaseController {
     }
 
     @PreAuthorize("@ss.hasPermi('biz:store:add')")
-    @Log(title = "店铺管理", businessType = BusinessType.INSERT,operatorType = MANAGE)
+    @Log(title = "店铺管理", businessType = BusinessType.INSERT, operatorType = MANAGE)
     @ApiOperation("添加店铺")
     @PostMapping("/stores")
     public AjaxResult addStore(@Valid @RequestBody AddStoreParam param) {
-        Store store = new Store();
-        store.setStoreName(param.getStoreName());
-        store.setBusinessStatus(param.getBusinessStatus());
-        store.setPackAmount(param.getPackAmount());
-        store.setDeliveryAmount(param.getDeliveryAmount());
+        Store store = Store.builder()
+                .storeName(param.getStoreName())
+                .businessStatus(param.getBusinessStatus())
+                .packAmount(param.getPackAmount())
+                .deliveryAmount(param.getDeliveryAmount())
+                .build();
         store.setCreateTime(DateUtils.getNowDate());
         store.setCreateBy(SecurityUtils.getUsername());
         storeMapper.insertStore(store);
@@ -63,10 +65,10 @@ public class StoreController extends BaseController {
     }
 
     @PreAuthorize("@ss.hasPermi('biz:store:editName')")
-    @Log(title = "店铺管理", businessType = BusinessType.UPDATE,operatorType = MANAGE)
+    @Log(title = "店铺管理", businessType = BusinessType.UPDATE, operatorType = MANAGE)
     @ApiOperation("修改店铺名称")
-    @PutMapping("/stores/{id}/name")
-    public AjaxResult editStore(@PathVariable Long id, @Valid @RequestBody EditStoreNameParam param) {
+    @PutMapping("/stores/{id}/editName")
+    public AjaxResult editStoreName(@PathVariable Long id, @Valid @RequestBody EditStoreNameParam param) {
         Store store = storeMapper.selectStoreByStoreId(id);
         if (store == null) {
             return error("未找到店铺信息");
@@ -78,11 +80,11 @@ public class StoreController extends BaseController {
         return AjaxResult.success();
     }
 
-    @PreAuthorize("@ss.hasPermi('biz:store:editDetail')")
-    @Log(title = "店铺管理", businessType = BusinessType.UPDATE,operatorType = MANAGE)
+    @PreAuthorize("@ss.hasPermi('biz:store:editInfo')")
+    @Log(title = "店铺管理", businessType = BusinessType.UPDATE, operatorType = MANAGE)
     @ApiOperation("修改店铺详细信息")
-    @PutMapping("/stores/{id}/detail")
-    public AjaxResult editStoreDetail(@PathVariable Long id, @Valid @RequestBody EditStoreInfoParam param) {
+    @PutMapping("/stores/{id}/editInfo")
+    public AjaxResult editStoreInfo(@PathVariable Long id, @Valid @RequestBody EditStoreInfoParam param) {
         Store store = storeMapper.selectStoreByStoreId(id);
         if (store == null) {
             return error("未找到店铺信息");

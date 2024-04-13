@@ -1,7 +1,9 @@
 package com.ruoyi.biz.domain;
 
 import com.ruoyi.common.core.domain.BaseEntity;
-import lombok.*;
+import lombok.Builder;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.math.BigDecimal;
 
@@ -9,11 +11,8 @@ import java.math.BigDecimal;
  * 店铺对象 biz_store
  */
 @Data
-@ToString
 @Builder
 @EqualsAndHashCode(callSuper = true)
-@NoArgsConstructor
-@AllArgsConstructor
 public class Store extends BaseEntity {
     private static final long serialVersionUID = 1L;
 

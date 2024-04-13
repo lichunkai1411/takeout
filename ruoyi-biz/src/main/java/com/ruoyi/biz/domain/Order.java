@@ -5,7 +5,6 @@ import com.ruoyi.common.core.domain.BaseEntity;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.ToString;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -14,7 +13,6 @@ import java.util.Date;
  * 订单对象 biz_order
  */
 @Data
-@ToString
 @Builder
 @EqualsAndHashCode(callSuper = true)
 public class Order extends BaseEntity {

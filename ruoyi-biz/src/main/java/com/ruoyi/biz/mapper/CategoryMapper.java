@@ -11,50 +11,35 @@ import java.util.List;
 
 /**
  * 分类Mapper接口
- *
- * @author ruoyi
- * @date 2024-04-01
  */
 public interface CategoryMapper {
     /**
-     * 查询分类
-     *
-     * @param categoryId 分类主键
-     * @return 分类
+     * 通过分类ID查询分类
      */
-    public Category selectCategoryByCategoryId(Long categoryId);
+    Category selectCategoryByCategoryId(Long categoryId);
 
     /**
      * 查询分类列表
-     *
-     * @param param 分类
-     * @return 分类集合
      */
-    public List<CategoryListVo> selectCategoryList(CategoryListParam param);
+    List<CategoryListVo> selectCategoryList(@Param("param") CategoryListParam param, @Param("storeId") Long storeId);
 
     /**
      * 新增分类
-     *
-     * @param category 分类
-     * @return 结果
      */
-    public int insertCategory(Category category);
+    int insertCategory(Category category);
 
     /**
      * 修改分类
-     *
-     * @param category 分类
-     * @return 结果
      */
-    public int updateCategory(Category category);
+    int updateCategory(Category category);
 
     /**
-     * 删除分类
-     *
-     * @param categoryId 分类主键
-     * @return 结果
+     * 通过分类ID删除分类
      */
-    public int deleteCategoryByCategoryId(Long categoryId);
+    int deleteCategoryByCategoryId(Long categoryId);
 
+    /**
+     * 通过查询条件获取所有分类
+     */
     List<CategoryAllVo> getAll(@Param("param") CategoryAllParam param, @Param("storeId") Long storeId);
 }

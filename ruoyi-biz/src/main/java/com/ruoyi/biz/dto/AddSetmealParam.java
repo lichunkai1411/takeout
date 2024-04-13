@@ -29,13 +29,9 @@ public class AddSetmealParam {
     @ApiModelProperty(value = "套餐图片", required = true)
     private String setmealImage;
 
-    @NotEmpty(message = "售卖状态不可为空")
-    @ApiModelProperty(value = "售卖状态", required = true)
-    private String saleStatus;
-
     @ApiModelProperty(value = "套餐描述")
     private String description;
 
     @ApiModelProperty(value = "套餐菜品关系")
-    private List<SetmealDishDTO> setmealDishes;
+    private List<SetmealDishDTO> setMealDishes;
 }

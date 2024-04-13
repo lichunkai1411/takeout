@@ -3,24 +3,8 @@
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ruoyi.biz.mapper.CategoryMapper">
-    
-    <resultMap type="Category" id="CategoryResult">
-        <result property="categoryId"    column="category_id"    />
-        <result property="categoryName"    column="category_name"    />
-        <result property="categoryType"    column="category_type"    />
-        <result property="categoryStatus"    column="category_status"    />
-        <result property="categorySort"    column="category_sort"    />
-        <result property="createTime"    column="create_time"    />
-        <result property="createBy"    column="create_by"    />
-        <result property="updateTime"    column="update_time"    />
-        <result property="updateBy"    column="update_by"    />
-    </resultMap>
 
-    <sql id="selectCategoryVo">
-        select category_id, category_name, category_type, category_status, category_sort, create_time, create_by, update_time, update_by from biz_category
-    </sql>
-
-    <select id="selectCategoryList">
+    <select id="selectCategoryList" resultType="com.ruoyi.biz.dto.CategoryListVo">
         select category_id,
                category_type,
                category_name,
@@ -39,7 +23,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             </if>
     </select>
 
-    <insert id="insertCategory" parameterType="com.ruoyi.biz.domain.Category">
+    <insert id="insertCategory">
         insert into biz_category
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="storeId != null">store_id,</if>
@@ -65,7 +49,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
          </trim>
     </insert>
 
-    <update id="updateCategory" parameterType="Category">
+    <update id="updateCategory">
         update biz_category
         <trim prefix="SET" suffixOverrides=",">
             <if test="categoryName != null and categoryName != ''">category_name = #{categoryName},</if>
@@ -80,7 +64,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         where category_id = #{categoryId}
     </update>
 
-    <delete id="deleteCategoryByCategoryId" parameterType="Long">
+    <delete id="deleteCategoryByCategoryId">
         delete from biz_category where category_id = #{categoryId}
     </delete>
 
@@ -95,6 +79,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </if>
         order by c.category_name
     </select>
+
     <select id="selectCategoryByCategoryId" resultType="com.ruoyi.biz.domain.Category">
         select category_id,
                category_name,

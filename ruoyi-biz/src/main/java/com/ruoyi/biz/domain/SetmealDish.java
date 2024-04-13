@@ -4,13 +4,11 @@ import com.ruoyi.common.core.domain.BaseEntity;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.ToString;
 
 /**
  * 套餐菜品对象 biz_setmeal_dish
  */
 @Data
-@ToString
 @Builder
 @EqualsAndHashCode(callSuper = true)
 public class SetmealDish extends BaseEntity {

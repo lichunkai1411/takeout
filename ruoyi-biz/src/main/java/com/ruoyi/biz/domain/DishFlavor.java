@@ -7,7 +7,6 @@ import lombok.*;
  * 菜品口味对象 biz_dish_flavor
  */
 @Data
-@ToString
 @Builder
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor

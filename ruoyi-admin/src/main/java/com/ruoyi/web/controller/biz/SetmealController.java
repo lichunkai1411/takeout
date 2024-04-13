@@ -59,10 +59,16 @@ public class SetmealController extends BaseController {
     @ApiOperation("添加套餐")
     @PostMapping("/setmeals")
     public AjaxResult addSetmeal(@Valid @RequestBody AddSetmealParam param) {
-        Setmeal setMeal = new Setmeal();
         // 只能添加本店铺下的套餐
         Long storeId = SecurityUtils.getLoginUser().getUser().getStoreId();
-        BeanUtils.copyBeanProp(param,setMeal);
+        Setmeal setMeal =  Setmeal.builder()
+                .setmealName(param.getSetmealName())
+                .categoryId(param.getCategoryId())
+                .setmealPrice(param.getSetmealPrice())
+                .setmealImage(param.getSetmealImage())
+                .description(param.getDescription())
+                // setMealDishes
+                .build();
         setMeal.setStoreId(storeId);
         setMeal.setCreateBy(SecurityUtils.getUsername());
         setMeal.setCreateTime(DateUtils.getNowDate());
@@ -81,12 +87,16 @@ public class SetmealController extends BaseController {
             return AjaxResult.error("套餐不存在");
         }
         // 只能修改本店铺下的套餐信息
-        Long storeId = SecurityUtils.getLoginUser().getUser().getStoreId();
-        if (!storeId.equals(setMeal.getStoreId())) {
+        if (!setMeal.getStoreId().equals(SecurityUtils.getLoginUser().getUser().getStoreId())) {
             return AjaxResult.error("只能修改本店铺的套餐信息");
         }
         setMealMapper.deleteSetmealDishBySetmealId(id);
-        BeanUtils.copyBeanProp(param,setMeal);
+        setMeal.setSetmealName(param.getSetmealName());
+        setMeal.setCategoryId(param.getCategoryId());
+        setMeal.setSetmealPrice(param.getSetmealPrice());
+        setMeal.setSetmealImage(param.getSetmealImage());
+        setMeal.setDescription(param.getDescription());
+        // setMealDishes
         setMeal.setUpdateTime(DateUtils.getNowDate());
         setMeal.setUpdateBy(SecurityUtils.getUsername());
         setMealMapper.updateSetmeal(setMeal);
@@ -104,8 +114,7 @@ public class SetmealController extends BaseController {
                 return AjaxResult.error("套餐不存在");
             }
             // 只能删除本店铺下的套餐信息
-            Long storeId = SecurityUtils.getLoginUser().getUser().getStoreId();
-            if (!storeId.equals(setMeal.getStoreId())) {
+            if (!setMeal.getStoreId().equals(SecurityUtils.getLoginUser().getUser().getStoreId())) {
                 return AjaxResult.error("只能删除本店铺的套餐信息");
             }
             // 在售状态下，不可删除套餐
@@ -121,7 +130,7 @@ public class SetmealController extends BaseController {
     @PreAuthorize("@ss.hasPermi('biz:setmeal:editSaleStatus')")
     @Log(title = "套餐管理", businessType = BusinessType.UPDATE,operatorType = MANAGE)
     @ApiOperation("售卖状态")
-    @PutMapping("/setmeals/saleStatus/{id}")
+    @PutMapping("/setmeals/{id}/editSaleStatus")
     public AjaxResult changeSaleStatus(@PathVariable Long id, @Valid @RequestBody EditSetmealStatusParam param) {
         Setmeal setMeal = setMealMapper.selectSetmealBySetmealId(id);
         if (setMeal == null) {

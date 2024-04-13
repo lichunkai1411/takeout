@@ -27,7 +27,7 @@ public class EditSetmealParam {
 
     @NotEmpty(message = "套餐菜品关系不可为空")
     @ApiModelProperty(value = "套餐菜品关系")
-    private List<SetmealDishDTO> setmealDishes;
+    private List<SetmealDishDTO> setMealDishes;
 
     @NotEmpty(message = "套餐图片不可为空")
     @ApiModelProperty(value = "套餐图片", required = true)

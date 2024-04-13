@@ -3,26 +3,8 @@
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ruoyi.biz.mapper.SetmealMapper">
-    
-    <resultMap type="Setmeal" id="SetmealResult">
-        <result property="setmealId"    column="setmeal_id"    />
-        <result property="categoryId"    column="category_id"    />
-        <result property="setmealName"    column="setmeal_name"    />
-        <result property="setmealPrice"    column="setmeal_price"    />
-        <result property="setmealImage"    column="setmeal_image"    />
-        <result property="saleStatus"    column="sale_status"    />
-        <result property="description"    column="description"    />
-        <result property="createTime"    column="create_time"    />
-        <result property="createBy"    column="create_by"    />
-        <result property="updateTime"    column="update_time"    />
-        <result property="updateBy"    column="update_by"    />
-    </resultMap>
 
-    <sql id="selectSetmealVo">
-        select setmeal_id, category_id, setmeal_name, setmeal_price, setmeal_image, sale_status, description, create_time, create_by, update_time, update_by from biz_setmeal
-    </sql>
-
-    <select id="selectSetmealList">
+    <select id="selectSetmealList" resultType="com.ruoyi.biz.dto.SetmealListVo">
         select
             s.*,c.category_name categoryName
             from biz_setmeal s
@@ -43,25 +25,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         order by s.create_time desc
     </select>
     
-    <select id="selectSetmealBySetmealId" parameterType="Long" resultMap="SetmealResult">
-        <include refid="selectSetmealVo"/>
-        where setmeal_id = #{setmealId}
-    </select>
-    <select id="selectSetmealByDishIds" resultType="com.ruoyi.biz.domain.SetmealDish">
-        select
-            s.setmeal_id,
-            s.category_id,
-            d.dish_name,
-            d.dish_price,
-            d.dish_image
-            from biz_setmeal s
-            left join biz_dish d
-            on
-            s.category_id = d.category_id
-        where s.setmeal_id = #{setmealId}
+    <select id="selectSetmealBySetmealId" resultType="com.ruoyi.biz.domain.Setmeal">
+        select * from biz_setmeal where setmeal_id = #{setmealId}
     </select>
 
-    <insert id="insertSetmeal" parameterType="Setmeal" useGeneratedKeys="true" keyProperty="setmealId">
+    <insert id="insertSetmeal">
         insert into biz_setmeal
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="storeId != null">store_id,</if>
@@ -91,7 +59,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
          </trim>
     </insert>
 
-    <update id="updateSetmeal" parameterType="Setmeal">
+    <update id="updateSetmeal">
         update biz_setmeal
         <trim prefix="SET" suffixOverrides=",">
             <if test="categoryId != null">category_id = #{categoryId},</if>

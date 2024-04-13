@@ -4,13 +4,11 @@ import com.ruoyi.common.core.domain.BaseEntity;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.ToString;
 
 /**
  * 收货地址对象 biz_address
  */
 @Data
-@ToString
 @Builder
 @EqualsAndHashCode(callSuper = true)
 public class Address extends BaseEntity {

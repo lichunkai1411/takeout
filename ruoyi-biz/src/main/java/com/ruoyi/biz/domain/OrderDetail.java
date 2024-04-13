@@ -4,7 +4,6 @@ import com.ruoyi.common.core.domain.BaseEntity;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.ToString;
 
 import java.math.BigDecimal;
 
@@ -12,7 +11,6 @@ import java.math.BigDecimal;
  * 订单明细对象 biz_order_detail
  */
 @Data
-@ToString
 @Builder
 @EqualsAndHashCode(callSuper = true)
 public class OrderDetail extends BaseEntity {

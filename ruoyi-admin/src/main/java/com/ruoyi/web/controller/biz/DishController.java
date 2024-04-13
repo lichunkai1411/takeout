@@ -64,11 +64,17 @@ public class DishController extends BaseController {
     @PostMapping("/dishes")
     @Transactional
     public AjaxResult addDish(@Valid @RequestBody AddDishParam param) {
-        Dish dish = new Dish();
         // 获取用户所在店铺ID
         Long storeId = SecurityUtils.getLoginUser().getUser().getStoreId();
+        Dish dish =  Dish.builder()
+                .dishName(param.getDishName())
+                .categoryId(param.getCategoryId())
+                .dishPrice(param.getDishPrice())
+                .dishImage(param.getDishImage())
+                .description(param.getDescription())
+                // dishFlavors
+        .build();
         dish.setStoreId(storeId);
-        BeanUtils.copyProperties(param, dish);
         dish.setSaleStatus("biz_sale_status_disable");
         dish.setCreateTime(DateUtils.getNowDate());
         dish.setCreateBy(SecurityUtils.getUsername());
@@ -133,8 +139,8 @@ public class DishController extends BaseController {
     @PreAuthorize("@ss.hasPermi('biz:dish:editSaleStatus')")
     @Log(title = "菜品管理", businessType = BusinessType.UPDATE, operatorType = MANAGE)
     @ApiOperation("修改售卖状态")
-    @PutMapping("/dishes/{id}/saleStatus")
-    public AjaxResult editSaleStatus(@PathVariable Long id, @RequestBody EditSaleStatusParam param) {
+    @PutMapping("/dishes/{id}/editSaleStatus")
+    public AjaxResult changeSaleStatus(@PathVariable Long id, @RequestBody EditSaleStatusParam param) {
         Dish dish = dishMapper.selectDishByDishId(id);
         if (dish == null) {
             return AjaxResult.error("菜品不存在");

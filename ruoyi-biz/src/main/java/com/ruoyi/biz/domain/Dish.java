@@ -9,7 +9,6 @@ import java.math.BigDecimal;
  * 菜品对象 biz_dish
  */
 @Data
-@ToString
 @Builder
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor

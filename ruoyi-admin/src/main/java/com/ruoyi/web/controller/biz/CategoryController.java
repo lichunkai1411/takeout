@@ -44,9 +44,8 @@ public class CategoryController extends BaseController {
     public TableDataInfo getList(CategoryListParam param) {
         // 仅获取本店铺下分类
         Long storeId = SecurityUtils.getLoginUser().getUser().getStoreId();
-        param.setStoreId(storeId);
         startPage();
-        List<CategoryListVo> list = categoryMapper.selectCategoryList(param);
+        List<CategoryListVo> list = categoryMapper.selectCategoryList(param, storeId);
         return getDataTable(list);
     }
 
@@ -57,12 +56,13 @@ public class CategoryController extends BaseController {
     public AjaxResult addCategory(@Valid @RequestBody AddCategoryParam param) {
         // 获取用户所在店铺ID
         Long storeId = SecurityUtils.getLoginUser().getUser().getStoreId();
-        Category category = new Category();
+        Category category = Category.builder()
+                .categoryName(param.getCategoryName())
+                .categorySort(param.getCategorySort())
+                .categoryType(param.getCategoryType())
+                .categoryStatus(param.getCategoryStatus())
+                .build();
         category.setStoreId(storeId);
-        category.setCategoryName(param.getCategoryName());
-        category.setCategorySort(param.getCategorySort());
-        category.setCategoryType(param.getCategoryType());
-        category.setCategoryStatus(param.getCategoryStatus());
         category.setCreateTime(DateUtils.getNowDate());
         category.setCreateBy(SecurityUtils.getUsername());
         categoryMapper.insertCategory(category);
@@ -79,10 +79,10 @@ public class CategoryController extends BaseController {
             return AjaxResult.error("分类不存在");
         }
         // 获取用户所在店铺ID
-        Long storeId = SecurityUtils.getLoginUser().getUser().getStoreId();
-        if (!Objects.equals(storeId, category.getCategoryId())) {
+        if (!category.getStoreId().equals(SecurityUtils.getLoginUser().getUser().getStoreId())) {
             return AjaxResult.error("只能修改本店铺的分类信息");
         }
+        categoryMapper.deleteCategoryByCategoryId(id);
         category.setCategoryName(param.getCategoryName());
         category.setCategorySort(param.getCategorySort());
         category.setCategoryType(param.getCategoryType());
@@ -103,7 +103,7 @@ public class CategoryController extends BaseController {
         }
         // 获取用户所在店铺ID
         Long storeId = SecurityUtils.getLoginUser().getUser().getStoreId();
-        if (!Objects.equals(storeId, category.getStoreId())) {
+        if (!category.getStoreId().equals(SecurityUtils.getLoginUser().getUser().getStoreId())) {
             return AjaxResult.error("只能删除本店铺的分类信息");
         }
         // 判断当前分类下是否有菜品或套餐
@@ -131,8 +131,7 @@ public class CategoryController extends BaseController {
             return AjaxResult.error("分类不存在");
         }
         // 获取用户所在店铺ID
-        Long storeId = SecurityUtils.getLoginUser().getUser().getStoreId();
-        if (!Objects.equals(storeId, category.getStoreId())) {
+        if (!category.getStoreId().equals(SecurityUtils.getLoginUser().getUser().getStoreId())) {
             return AjaxResult.error("只能修改本店铺的分类信息");
         }
         category.setCategoryStatus(param.getCategoryStatus());
