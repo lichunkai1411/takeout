@@ -1,18 +1,20 @@
 package com.ruoyi.biz.mapper;
 
-import java.util.List;
 import com.ruoyi.biz.domain.Setmeal;
 import com.ruoyi.biz.domain.SetmealDish;
 import com.ruoyi.biz.dto.SetmealInfo;
 import com.ruoyi.biz.dto.SetmealListParam;
 import com.ruoyi.biz.dto.SetmealListVo;
+import com.ruoyi.biz.dto.SetmealVo;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
  * 套餐Mapper接口
  */
-public interface SetmealMapper 
-{
+public interface SetmealMapper {
+
     /**
      * 通过套餐ID查询套餐
      */
@@ -52,4 +54,9 @@ public interface SetmealMapper
      * 通过套餐ID删除套餐菜品
      */
     void deleteSetmealDishBySetmealId(Long id);
+
+    /**
+     * 通过套餐ID查询套餐及菜品信息
+     */
+    SetmealVo selectSetmealVOBySetmealId(Long setmealId);
 }

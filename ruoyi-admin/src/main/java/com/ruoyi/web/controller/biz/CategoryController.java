@@ -57,12 +57,12 @@ public class CategoryController extends BaseController {
         // 获取用户所在店铺ID
         Long storeId = SecurityUtils.getLoginUser().getUser().getStoreId();
         Category category = Category.builder()
+                .storeId(storeId)
                 .categoryName(param.getCategoryName())
                 .categorySort(param.getCategorySort())
                 .categoryType(param.getCategoryType())
                 .categoryStatus(param.getCategoryStatus())
                 .build();
-        category.setStoreId(storeId);
         category.setCreateTime(DateUtils.getNowDate());
         category.setCreateBy(SecurityUtils.getUsername());
         categoryMapper.insertCategory(category);
@@ -124,8 +124,8 @@ public class CategoryController extends BaseController {
     @PreAuthorize("@ss.hasPermi('biz:category:editStatus')")
     @Log(title = "分类管理", businessType = BusinessType.UPDATE, operatorType = MANAGE)
     @ApiOperation("修改分类状态")
-    @PutMapping("/categories/{id}/status")
-    public AjaxResult changeStatus(@PathVariable Long id, @Valid @RequestBody EditCategoryStatusParam param) {
+    @PutMapping("/categories/{id}/editStatus")
+    public AjaxResult editStatus(@PathVariable Long id, @Valid @RequestBody EditCategoryStatusParam param) {
         Category category = categoryMapper.selectCategoryByCategoryId(id);
         if (category == null) {
             return AjaxResult.error("分类不存在");

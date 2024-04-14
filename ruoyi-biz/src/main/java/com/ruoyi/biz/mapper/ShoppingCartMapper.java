@@ -8,6 +8,7 @@ import com.ruoyi.biz.domain.ShoppingCart;
  */
 public interface ShoppingCartMapper 
 {
+
     /**
      * 通过购物车ID查询购物车
      */

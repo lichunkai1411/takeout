@@ -4,8 +4,8 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
-@ApiModel("套餐列表-请求")
 @Data
+@ApiModel("套餐列表-请求")
 public class SetmealListParam {
 
     @ApiModelProperty("套餐名称")

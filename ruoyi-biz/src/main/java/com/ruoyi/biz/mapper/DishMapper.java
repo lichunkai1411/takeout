@@ -13,6 +13,7 @@ import org.apache.ibatis.annotations.Param;
  */
 public interface DishMapper 
 {
+
     /**
      * 通过菜品ID查询菜品
      */

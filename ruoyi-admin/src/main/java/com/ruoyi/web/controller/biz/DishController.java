@@ -72,17 +72,18 @@ public class DishController extends BaseController {
                 .dishPrice(param.getDishPrice())
                 .dishImage(param.getDishImage())
                 .description(param.getDescription())
-                // dishFlavors
-        .build();
+                .build();
         dish.setStoreId(storeId);
         dish.setSaleStatus("biz_sale_status_disable");
         dish.setCreateTime(DateUtils.getNowDate());
         dish.setCreateBy(SecurityUtils.getUsername());
         dishMapper.insertDish(dish);
         param.getDishFlavors().forEach(dishFlavorDTO -> {
-            DishFlavor dishFlavor = new DishFlavor();
-            dishFlavor.setDishId(dish.getDishId());
-            BeanUtils.copyProperties(dishFlavorDTO, dishFlavor);
+            DishFlavor dishFlavor = DishFlavor.builder()
+                    .dishId(dish.getDishId())
+                    .flavorType(dishFlavorDTO.getFlavorType())
+                    .flavorOpt(dishFlavorDTO.getFlavorOpt())
+                    .build();
             dishFlavorMapper.insertDishFlavor(dishFlavor);
         });
         return AjaxResult.success();
@@ -102,8 +103,13 @@ public class DishController extends BaseController {
         if (!dish.getStoreId().equals(SecurityUtils.getLoginUser().getUser().getStoreId())) {
             return AjaxResult.error("只能修改本店铺的菜品信息");
         }
+        // 删除原有菜品口味信息
         dishFlavorMapper.deleteDishFlavorByDishId(id);
-        BeanUtils.copyProperties(param, dish);
+        dish.setCategoryId(param.getCategoryId());
+        dish.setDishName(param.getDishName());
+        dish.setDishPrice(param.getDishPrice());
+        dish.setDishImage(param.getDishImage());
+        dish.setDescription(param.getDescription());
         dish.setUpdateTime(DateUtils.getNowDate());
         dish.setUpdateBy(SecurityUtils.getUsername());
         dishMapper.updateDish(dish);
@@ -140,7 +146,7 @@ public class DishController extends BaseController {
     @Log(title = "菜品管理", businessType = BusinessType.UPDATE, operatorType = MANAGE)
     @ApiOperation("修改售卖状态")
     @PutMapping("/dishes/{id}/editSaleStatus")
-    public AjaxResult changeSaleStatus(@PathVariable Long id, @RequestBody EditSaleStatusParam param) {
+    public AjaxResult editSaleStatus(@PathVariable Long id, @RequestBody EditSaleStatusParam param) {
         Dish dish = dishMapper.selectDishByDishId(id);
         if (dish == null) {
             return AjaxResult.error("菜品不存在");

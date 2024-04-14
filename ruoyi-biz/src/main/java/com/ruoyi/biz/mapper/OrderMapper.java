@@ -1,13 +1,14 @@
 package com.ruoyi.biz.mapper;
 
-import java.util.List;
 import com.ruoyi.biz.domain.Order;
+
+import java.util.List;
 
 /**
  * 订单Mapper接口
  */
-public interface OrderMapper 
-{
+public interface OrderMapper {
+
     /**
      * 通过订单ID查询订单
      */

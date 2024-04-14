@@ -38,9 +38,8 @@ public class SetmealController extends BaseController {
     @PreAuthorize("@ss.hasPermi('biz:setmeal:info')")
     @ApiOperation("获取套餐详情")
     @GetMapping("/setmeal/{id}")
-    // 返回详情中缺少菜品信息
     public AjaxResult getInfo(@PathVariable Long id) {
-        return AjaxResult.success(setMealMapper.selectSetmealBySetmealId(id));
+        return AjaxResult.success(setMealMapper.selectSetmealVOBySetmealId(id));
     }
 
     @PreAuthorize("@ss.hasPermi('biz:setmeal:list')")

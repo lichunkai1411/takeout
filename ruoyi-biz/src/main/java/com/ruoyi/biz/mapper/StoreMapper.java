@@ -10,6 +10,7 @@ import java.util.List;
  * 店铺Mapper接口
  */
 public interface StoreMapper {
+
     /**
      * 通过店铺ID获取单个店铺信息
      */
@@ -29,5 +30,4 @@ public interface StoreMapper {
      * 修改店铺
      */
     int updateStore(Store store);
-
 }

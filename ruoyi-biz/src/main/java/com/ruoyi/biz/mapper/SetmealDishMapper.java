@@ -1,13 +1,14 @@
 package com.ruoyi.biz.mapper;
 
-import java.util.List;
 import com.ruoyi.biz.domain.SetmealDish;
+
+import java.util.List;
 
 /**
  * 套餐菜品Mapper接口
  */
-public interface SetmealDishMapper 
-{
+public interface SetmealDishMapper {
+
     /**
      * 通过套餐ID查询套餐菜品
      */

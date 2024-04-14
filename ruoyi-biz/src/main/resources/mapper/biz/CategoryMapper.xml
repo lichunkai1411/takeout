@@ -19,7 +19,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
                 and category_name like concat('%', #{categoryName}, '%')
             </if>
             <if test="categoryType != null  and categoryType != ''">
-            and category_type = #{categoryType}
+                and category_type = #{categoryType}
             </if>
     </select>
 

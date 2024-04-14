@@ -68,7 +68,7 @@ public class StoreController extends BaseController {
     @Log(title = "店铺管理", businessType = BusinessType.UPDATE, operatorType = MANAGE)
     @ApiOperation("修改店铺名称")
     @PutMapping("/stores/{id}/editName")
-    public AjaxResult editStoreName(@PathVariable Long id, @Valid @RequestBody EditStoreNameParam param) {
+    public AjaxResult editName(@PathVariable Long id, @Valid @RequestBody EditStoreNameParam param) {
         Store store = storeMapper.selectStoreByStoreId(id);
         if (store == null) {
             return error("未找到店铺信息");

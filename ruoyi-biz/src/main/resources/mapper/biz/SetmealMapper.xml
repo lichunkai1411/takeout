@@ -24,9 +24,35 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </where>
         order by s.create_time desc
     </select>
-    
-    <select id="selectSetmealBySetmealId" resultType="com.ruoyi.biz.domain.Setmeal">
-        select * from biz_setmeal where setmeal_id = #{setmealId}
+
+    <resultMap id="setmealVOResultMap" type="com.ruoyi.biz.dto.SetmealVo">
+        <id column="setmeal_id" property="setmealId"/>
+        <result column="setmeal_name" property="setmealName"/>
+        <result column="setmeal_price" property="setmealPrice"/>
+        <result column="setmeal_image" property="setmealImage"/>
+        <result column="description" property="description"/>
+        <collection property="setmealDishes" ofType="com.ruoyi.biz.dto.SetmealDishVO">
+            <id column="dish_id" property="dishId"/>
+            <result column="dish_name" property="dishName"/>
+            <result column="dish_price" property="dishPrice"/>
+            <result column="copies" property="copies"/>
+        </collection>
+    </resultMap>
+
+    <select id="selectSetmealVOBySetmealId" resultMap="setmealVOResultMap">
+        select s.setmeal_id,
+               s.setmeal_name,
+               s.setmeal_price,
+               s.setmeal_image,
+               s.description,
+               d.dish_id,
+               d.dish_name,
+               d.dish_price,
+               sd.copies
+        from biz_setmeal s
+            left join biz_setmeal_dish sd on s.setmeal_id = sd.setmeal_id
+            left join biz_dish d on sd.dish_id = d.dish_id
+        where s.setmeal_id = #{setmealId}
     </select>
 
     <insert id="insertSetmeal">
@@ -106,5 +132,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             on
             s.category_id = d.category_id
         where d.dish_id = #{dishId}
+    </select>
+
+    <select id="selectSetmealBySetmealId" resultType="com.ruoyi.biz.domain.Setmeal">
+        select * from biz_setmeal where setmeal_id = #{setmealId}
     </select>
 </mapper>

@@ -1,13 +1,14 @@
 package com.ruoyi.biz.mapper;
 
-import java.util.List;
 import com.ruoyi.biz.domain.Address;
+
+import java.util.List;
 
 /**
  * 收货地址Mapper接口
  */
-public interface AddressMapper 
-{
+public interface AddressMapper {
+
     /**
      * 通过收货地址ID查询收货地址
      */
